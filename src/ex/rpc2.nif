@@ -1,0 +1,9 @@
+# exemple 2 de Nife RPC
+echo_off
+# envoi d'une autre fct titi et execution
+# titi calcule 2sin2(x)/cos(2x)
+: titi
+dup sin dup * 2 * swap 2 * cos  / ;
+
+titi
+

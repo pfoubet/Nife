@@ -1,0 +1,154 @@
+History of Nife releases :
+
+2013-09-25 - Nife 0.44 is released.
+	* Fixed a bug causing a "segmentation violation" during compilation
+          of the Nife code on some systems as Raspberry Pi A and B and others.
+          This bug was reported by Bernard Bonno during tests on a Raspberry Pi
+          Model A with 256 Mo of memory.
+	* The installation has been tested by Bernard Bonno on a PC i484
+          with a Linux Porteus 2.0.
+	  All information about Porteus at http://www.porteus.org/.
+
+2013-09-09 - Nife 0.43 is released.
+	* Establishment of a sub-directory .nife to facilitate debugging and
+          store temporary files.
+	* Update some functions dependant on working directory.
+	* Fixed some bugs in the gplot tools due to new versions of gnuplot.
+	* The installation has been tested by Patrick Foubet on a Raspberry Pi
+          board Model B with standard Raspbian (Squeeze).
+	  All information about the board at http://www.raspberrypi.org/faqs.
+
+2012-10-23 - Nife 0.405 is released.
+        * Fixed a bug in the data transfer protocol STSP.
+        * Adding Dt indicators in the list giving by ?n function.
+        * Fixed a bug in the netDt> function.
+	* The installation has been tested by Patrick Foubet on a Beaglebone
+          board (Linux beaglebone 3.2.5+ #1 ... armv7l GNU/Linux) lended by the
+          school ESME Sudria for preparing a course on Linux drivers.
+	  All information about the board at http://beagleboard.org/bone.
+
+2012-09-01 - Nife 0.401 is released.
+	* Beginning the multi-threading mechanisms based on POSIX thread.
+	* Adding programmation tools end: and goto_end.
+	* Increasing error tracking :
+	  - giving the file name and the line number,
+	  - stopping compilation at first error,
+	  - allowing load in load.
+	  - adding functions ?err, noerr, messerr, ?lasterr and onerr: label.
+	* Dynamic code tools :
+	  - "load to load a file in a user function,
+	  - "exec to compile some code in a user function,
+	  - functions ' and ` to specify names to be executed latter.
+	* Limit for all names at 24 characters.
+	* Modifying install variables functions to work in user functions.
+	* Adding the free-context loop with do mechanisms :
+	  - do_next to bypass a loop in free-context,
+	  - do_leave and *do_leave to leave one or many loops in free-context,
+	* Updating the sh command to use the SHELL environment variable.
+
+2012-07-05 - Nife 0.341 is released.
+	* Adding more fonctions to deal with devices with Comedilib :
+	  - write fonction available,
+	  - define a default set of parameters to simplify programs.
+	* Update documentation for theses new commands.
+
+2012-06-10 - Nife 0.323 is released.
+	* Continuing distributed systems tools elaborated with Thomas Pabst :
+	  - Adding netCompile to load a Nife file on a remote Nife using NetKey.
+	  If this file contains a call of one or more functions, they will be
+	  executed, and the result will be send on the Net using NetKey.
+	  - Adding NetErr to get the Net Error value.
+	* Adding the ex directory in src with some program examples :
+	  - gp.nif, an example for gplot functions,
+	  - rpc.nif and rpc2.nif for Nife RPC example.
+
+2012-06-06 - Nife 0.320 is released.
+	* Beginning of the gplot module for use of gnuplot (www.gnuplot.info).
+	* adding theses functions :
+          - gplot and gplotM (multiple) to create gplots,
+          - gplotCmd to append text to the plot command,
+          - ?gp to list the gplots,
+          - del_gplot to delete a gplot,
+          - gplotAdd and gplotRepl (with replacement) to add values to plots,
+          - gplotClear to clear a display panel.
+	* The installation has been tested by Bruno Guilbert on a Fox board G20
+	  (Debian debarm 2.6.38 with CPU Atmel AT91SAM9G20 based on ARM926EJ-S)
+	  with the students TRSE2 of Ingesup-Paris :
+	  All information about the board at www.acmesystems.it.
+
+2012-05-22 - Nife 0.317 is released.
+	* Adding ndepth giving network stack depth using NetKey,
+	* Definition of principles for Nife RPC (remote procedure call).
+	* Adding netExec to execute a function on a remote Nife using NetKey.
+	* The installation has been tested by Dr Alain Empain (ulg.ac.be) on
+	  Ubuntu Lucid 10.O4 (Linux 2.6.38-15 - x86_64)
+	* The installation has been tested by Paul Bartoldi (unige.ch) on
+	  Ubuntu 12.O4 LTS (Linux 3.0.0-12 - x86_32)
+
+2012-05-11 - Nife 0.315 is released.
+	* Beginning of distributed systems tools elaborated with Thomas Pabst :
+	  - automatic evaluation of the dt values at network connection,
+	  - adding netDt> to get the clock difference value beetween "network"
+	    and Nife system. 
+	* The installation has been tested on
+	  Debian Wheezy Testing (Linux 3.2.0-2 - x86_32)
+
+2012-05-04 - Nife 0.311 is released.
+	* Modifying errors traps to get a better bug resolution.
+	* The installation has been tested by Bernard Perrin (csem.ch) on
+	  MacOS X Snow Leopard 10.6.8 (Darwin Kernel Vers 10.8.0 - x86_32)
+
+2012-03-16 - Nife 0.307 is released.
+	* Adding auto-convergent loop : do ... loop
+	* Adding standards loop : do ... +loop
+	* Possibility to test the loop level and use indexes I, J and K.
+	* Adding del_ofunc to delete, by name, the oldest function,
+	* Adding del_afunc to delete all functions beginning by a prefix,
+	* Adding "exec to execute a user function giving her name on the
+	  character stack.
+	* Adding "Var to create a variable giving her name on the character
+	  stack.
+	* Rename functions sub[] in []-sub and *sub[] in *[]-sub to adopt a
+	  more logical notation.
+
+2012-03-08 - Nife 0.303 is released.
+	* This release is specially dedicated to my wife Christine.
+	* Now you can use nife with redirection or pîpe :
+	  nife < fic.nif or cat fic.nif | nife
+	Thank you to Denis Bodor for the idea !
+
+2012-02-22 - Nife 0.302 is released.
+	* Christophe Ondrejec has validate the site nife-project.org
+	* Updating README, NEWS and all informations files.
+	* The installation has been tested on :
+	  - Debian Lenny (Linux 2.6.26-2 - x86_32)
+	  - Debian Squeeze (Linux 2.6.32-5 - x86_64)
+	  - Mac OS X (Darwin Kernel Version 8.11.1 - x86_32)
+	  - Open BSD (Version 5.0 GENERIC#43 - x86_32)
+	  - Solaris 11 (SunOS v 5.11 - x86_32)
+	  - Fedora Core 15 (Linux 2.6.38-6 - x86_32)
+	  - Open Suze 12.1 (Linux 3.1.0-1 - x86_64)
+	* Adding a benchmark test.
+
+2012-02-13 - Nife 0.300 is released (internal).
+	* Upgrading for working on both 32 or 64 bits.
+	* Upgrading SCS (Sister Chip Signature) to accept data from machine
+	  differents on code or addresses but using compatible datas.
+	* Integration of the GNU Autotools to generate the packages.
+
+2011-11-13 - Nife 0.212 is released.
+	* Network tools with STSP (stack to stack protocol) v0.5 : 
+	  ie WITH ScS (Sister chip signature) v 1.
+	* correction of function []trot.
+	* new function []transp to transpose matrix.
+
+2011-11-09 - Nife 0.209 is released.
+	* Network tools with STSP (stack to stack protocol) v.0 :
+	  ie without ScS (Sister chip signature).
+
+2011-10-31 - Nife 0.204 is released.
+
+2011-10-26 - Nife 0.200 is released.
+
+2011-09-18 - Nife 0.113 the first public release on Sourceforge.net.
+

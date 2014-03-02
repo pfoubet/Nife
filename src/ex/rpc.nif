@@ -1,0 +1,21 @@
+# exemple de Nife RPC
+echo_off
+
+# 1) Mettre les fichiers rep.nif et rep2.nif dans le repertoire de nife
+# 2) Connecter la machine au reseau (Me netOn)
+# 3) Puis en connecter une autre (par exemple Test)
+# 4) Sur la machine locale faire : load rpc.nif
+# Puis : titi
+# Puis : " rpc2.nif" " Test" netCompile
+# 5) Verifier avec : ?s ?ns
+# 6) Recuperer le resultat et nettoyer le reseau : net> ndrop
+
+# titi met NetKey a 0xcafe puis fabrique une rampe de 30 elts
+# et l'envoie sur le Net stack
+
+: titi
+0xcafe NetKey
+30 ramp 1 >net
+;
+
+

@@ -1,0 +1,49 @@
+# test gplot
+# Ci-dessous des exemples d'utilisation des commandes de la librairie gplot.c
+# dont les noms apparaissent dans les "tools" (?libT).
+
+echo_off
+
+# creation d'un gplot simple (1 seule courbe)
+" plot1.dat" " Essai de Courbe" gplot
+# ajout d'un texte supplémentaire dans la commande plot
+" smooth csplines, cos(x)" 1 gplotCmd                
+# creation d'un plot de 4 courbes
+" plotM.dat" " Essai multi Courbes" 4 gplotM
+
+# fonction qui ajoute 100 pts dans le gplot no 1, un par seconde.
+# chaque pt est compose du temps (t) en x et de sin(t) en y.
+: test 100 0 do
+time 10000000. / dup sin 2 >array 1 gplotAdd 1 sleep loop ;
+
+# la meme chose mais en replaçant, c'est a dire en enlevant le pt le plus ancien
+# a chaque fois que l'on en ajoute un.
+: test2 100 0 do
+time 10000000. / dup sin 2 >array 1 gplotRepl 1 sleep loop ;
+
+# fonction qui ajoute 100 pts dans le gplot no 2, un par seconde.
+# chaque pt est compose de t en x et de sin(t), cos(t), sin2(t), cos2(t) en y.
+: testM
+100 0 do time 10000000. / dup dup sin swap dup cos swap dup sin dup * swap cos
+dup * 5 >array 2 gplotAdd 1 sleep loop ;
+
+# la meme chose que testM mais en replaçant, c'est a dire en enlevant le pt le
+# plus ancien a chaque fois que l'on en ajoute un.
+: testM2
+100 0 do time 10000000. / dup dup sin swap dup cos swap dup sin dup * swap cos
+dup * 5 >array 2 gplotRepl 1 sleep loop ;
+
+# Ici on fait en parrallele test ET testM, c'est-à-dire un affichage sur les 2!
+: testG
+100 0 do time 10000000. / 
+dup dup sin 2 >array 1 gplotAdd
+dup dup sin swap dup cos swap dup sin dup * swap cos
+dup * 5 >array 2 gplotAdd 1 sleep loop ;
+
+# Meme chose que testG en remplaçant.
+: testG2
+100 0 do time 10000000. / 
+dup dup sin 2 >array 1 gplotRepl
+dup dup sin swap dup cos swap dup sin dup * swap cos
+dup * 5 >array 2 gplotRepl 1 sleep loop ;
+

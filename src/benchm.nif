@@ -1,0 +1,15 @@
+# Benchmark test v 1
+echo_off
+about
+: f
+time 1000000 ramp 1 - .1 * sin time
+;
+: test
+ f rot -                 # call the function and put result on the top
+ .000001 *               # transform it in secondes
+ cr " Result =" "type .  # print the result
+ " secs" "type cr        # add S.I legend
+;
+test
+exit
+

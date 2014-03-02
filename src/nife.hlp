@@ -1,0 +1,642 @@
+"  { -- string }
+ begins a string wich is terminated by itself. The first blank is a separator.
+ The character \ masks the character " as end of string.
+' : { string -- }
+ begins, into a function (beetween : and ;), a string which represents a name of
+ a user function, or a variable. This string will be interpreted and executed 
+ during the function execution.
+ There is no verification : if the name does not exist, it does nothing.
+` : { string -- }
+ begins, into a function (beetween : and ;), a string which represents a name of
+ a user function, or a variable. This string will be interpreted and executed 
+ during the function execution. At the first time the code is updated if the
+ function or the variable is found.
+ There is no verification : if the name does not exist, it does nothing.
+"cat : { str1 str2 -- 'str1str2' }
+ catenates the two elements on the top string stack entry.
+"cats : { str1 str2 -- 'str1 str2' }
+ catenates the two elements on the top string stack entry with a space beetween.
+"date  : { -- date_string }
+ puts the date string (JJ/MM/AAAA) on the top string stack entry.
+"drop : { str1 -- }
+ removes the top string stack entry.
+"dup : { str1 -- str1 str1 }
+ duplicates the top string stack entry.
+"over : { str2 str1 -- str2 str1 str2 }
+ duplicates the second string stack entry onto the top of the stack.
+"swap : { str2 str1 -- str1 str2 }
+ exchanges the top two string stack entries.
+"time : { -- time_string }
+ put the time string (hh:mm:ss) on the top string stack entry.
+"type : { str1 -- }
+ displays and removes the top string stack entry.
+"f : { fname -- }
+ executes the function fname. An error occurs if the function does not exist.
+"v : { vname -- }
+ executes the variable vname. An error occurs if the variable does not exist.
+"f? : { fname -- } ( -- T/F )
+ executes the function fname. In succes TRUE is putting on the logical stack, if
+ not FALSE.
+"v? : { vname -- } ( -- T/F )
+ executes the variable vname. In succes TRUE is putting on the logical stack, if
+ not FALSE.
+"exec : { "code" -- }
+ executes the code in a string on the top of the character stack.
+ Does nothing if the string is empty.
+"execf : { "code" -- }
+ executes the code in a string on the top of the character stack as the content
+ of a function. At each time the function is dynamicaly compiled and executed.
+ Does nothing if the string is empty.
+"execk : { "code" -- }
+ compiles the code in a string on the top of the character stack as the content
+ of a function. At the first time the function is dynamicaly compiled, keep as
+ a user function and executed. On other times the string is removed and the user
+ function is simply executed.
+ Does nothing if the string is empty.
+* : [ e1 e2 -- result ]
+ calculates the multiplication : e1 * e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] * e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ As this operation is commutative the result will be the same if the array is in
+ first or second position.
+** : [ e1 e2 -- result ]
+ calculates the power : e1 ** e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] ** e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+*[]< : [ tab1 tab2 ... tabn n -- tab1 tab2 ... tabn ]
+ left shift n arrays. The same as []< with n tabs.
+*[]<< : [ tab1 tab2 ... tabn n i -- tab1 tab2 ... tabn ]
+ left shift of i elements on n array. The same as []<< with n tabs.
+*[]> : [ tab1 tab2 ... tabn n -- tab1 tab2 ... tabn ]
+ right shift n arrays. The same as []> with n tabs.
+*[]>> : [ tab1 tab2 ... tabn n i -- tab1 tab2 ... tabn ]
+ right shift of i elements on n array. The same as []>> with n tabs.
+*[]rev : [ tab1 tab2 ... tabn n -- tab1 tab2 ... tabn ]
+ reverse n arrays. The same as []rev with n tabs.
+*drop : [ En+1 En ... E1 n -- En+1 ]
+ removes the top n number stack entries from the stack.
+*dup : [ En ... E1 n -- En ... E1 En ... E1 ]
+ duplicates the top n entries on the number stack.
++ : [ e1 e2 -- result ]
+ calculates the addition : e1 + e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] + e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ As this operation is commutative the result will be the same if the array is in
+ first or second position.
+- : [ e1 e2 -- result ]
+ calculates the soustraction : e1 - e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] - e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+. : [ e -- ]
+ displays and removes the top number stack entry.
+/ : [ e1 e2 -- result ]
+ calculates the division : e1 / e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] / e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+< : [ e1 e2 -- ] ( -- bool )
+ evaluates the less than test and put the result, true or false, on the logical
+ stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+<= : [ e1 e2 -- ] ( -- bool )
+ evaluates the less or equal than test and put the result, true or false, on the
+ logical stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+<> : [ e1 e2 -- ] ( -- bool )
+ evaluates the not equal test and put the result, true or false, on the logical
+ stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+= : [ e1 e2 -- ] ( -- bool )
+ evaluates the equal test and put the result on the logical stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ As this operation is commutative the result will be the same if the array is in
+ first or second position.
+> : [ e1 e2 -- ] ( -- bool )
+ evaluates the greater than test and put the result on the logical stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+>-scalar : [ [v1, ... ,vn] -- vn ... v2 v1 ]
+ transforms the array, on the top of the stack, with n elements, in n scalars.
+ The first value of the array will be the scalar on the top.
+>= : [ e1 e2 -- ] ( -- bool )
+ evaluates the greater or equal than test and put the result, true or false, on
+ the logical stack.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be a AND of the comparison of each elements : e1[i] < e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+>array : [ e1 e2 .... eN n -- array ]
+ take n elements to make an array. Each element ei may be an array.
+>scalar : [ [v1, ... ,vn] -- v1 v2 ... vn ]
+ transforms the array, on the top of the stack, with n elements, in n scalars.
+ The last value of the array will be the scalar on the top.
+?cs :
+ displays the character (string) stack.
+?drop : ( bool1 -- )
+ removes the top logical stack entry.
+?dup : ( bool1 -- bool1 bool1 )
+ duplicates the top logical stack entry.
+?lib :
+ displays the names of base library functions.
+?libD :
+ displays the names of devices library functions.
+?libN :
+ displays the names of network library functions.
+?libT :
+ displays the names of tools library functions. Theses tools are built on extern
+ Linux tools (gnuplot, xgraph, ...).
+?libM :
+ displays the names of math library functions.
+?libP :
+ displays the names of programming library functions.
+?libU :
+ displays the names of user system functions.
+?libs :
+ displays the names of all libraries functions.
+?ls :
+ displays the logical stack.
+?over : ( bool2 bool1 -- bool2 bool1 bool2 )
+ duplicates the second logical stack entry onto the top of the stack.
+?s :
+ display the number stack.
+?swap : ( bool2 bool1 -- bool1 bool2 )
+ exchanges the top two logical stack entries.
+?t/f : ( bool -- )
+ displays and removes the top logical stack entry.
+?vars :
+ display the list of constants of the system environment.
+DEBUG_I/O :
+ toggle to set debug mode on or off.
+INTEGER :
+ sets the default type to INTEGER.
+NBLIG : [ n -- ]
+ sets the variable NBLIG to n.
+ NBLIG is used to limit the display of the stack.
+NBTAB : [ n -- ]
+ sets the variable NBTAB to n.
+ NBTAB is used to limit the display of the stack.
+REAL :
+ sets the default type to REAL.
+[]< : [ [v1,v2,...vn] -- [v2, ... ,vn,v1] ]
+ left shift of 1 element on an array.
+[]<< : [ [v1,v2,...vn] i -- [vi+1, ... ,vn,v1,v2 ... vi] ]
+ left shift of i elements on an array.
+[]> : [ [v1,v2,...vn] -- [vn,v1,v2, ... ,vn-1] ]
+ right shift of 1 element on an array.
+[]>> : [ [vn,vn-1,...,v2,v1] i -- [vi, ... ,v2,v1,vn ... vi+1] ]
+ right shift of i elements on an array.
+[]crot : [ tab1 tab2 ... tabN n -- Ntab1 ... NtabP ]
+ clock rotation on n arrays of P elements. Ntab1 will be composed with the lasts
+ elements of tab1 ... tabN and NtabP with firsts elements of tab1 ... tabN.
+[]max : [ [v1,v2,...vn] -- vMax ]
+ replace the array on the top of the stack by the maximum value.
+[]min : [ [v1,v2,...vn] -- vMin ]
+ replace the array on the top of the stack by the minimum value.
+[]min/max : [ [v1,v2,...vn] -- vMin vMax ]
+ replace the array on the top of the stack by the minimum and maximum values.
+[]prod  : [ [v1,v2,...vn] -- v1*v2*...*vn ]
+ replace the array on the top of the stack by the product of all values.
+[]rev : [ [v1,v2,...vn] -- [vn ... v2,v1] ]
+ reverse an array.
+[]sum : [ [v1,v2,...vn] -- v1+v2+...+vn ]
+ replace the array on the top of the stack by the sum of all values.
+[]trot : [ tab1 tab2 ... tabN n -- Ntab1 ... NtabP ]
+ trigonometric rotation with n arrays of P elements. Ntab1 will be composed with
+ the firsts elements of tabN ... tab1 and NtabP with firsts elements of tabN ...
+ tab1.
+[]transp : [ tab1 tab2 ... tabN n -- Ntab1 ... NtabP ]
+ computes the transpose of the matrix composed with n arrays of P elements.
+ Ntab1 will be composed by the last line of this matrix and NtabP with the first
+ line.
+about :
+ displays the name of the system and the version.
+and : ( A B -- AandB )
+ replaces the two booleans on the top of logical stack by the AND.
+cr :
+ displays carriage-return (new line).
+depth : [ -- Stack_Depth ]
+ returns the number of entries on the current number stack to the number stack.
+dramp : [ n -- [-n, ...,-1,0,1,2, ...,n] ]
+ builds an array with 2n+1 elements and initialize it with a ramp (-n to n). It is in fact a double ramp.
+drop : [ E -- ]
+ removes the top number stack entry.
+dup : [ E -- E E ]
+ duplicates the top number stack entry.
+echo_off :
+ sets the echo mode off.
+echo_on :
+ sets the echo mode off.
+exit : 
+ terminates the program.
+false : ( -- false )
+ puts false on the top of the logical stack.
+help :
+ this help !! Need a word following.
+ls_clear : ( bool1 bool2 ... boolN -- )
+ clears the logical stack.
+cs_clear : { str1 ... strn -- }
+ clears the character stack.
+max : [ e1 e2 -- result ]
+ calculates the maximun of e1 and e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = max(e1[i], e2[i]).
+ If e1 or e2 is an array the function adapts itself.
+ As this operation is commutative the result will be the same if the array is in
+ first or second position.
+min : [ e1 e2 -- result ]
+ calculates the minimun of e1 and e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = min(e1[i], e2[i]).
+ If e1 or e2 is an array the function adapts itself.
+ As this operation is commutative the result will be the same if the array is in
+ first or second position.
+modulo : [ e1 e2 -- result ]
+ calculates the rest of the division : e1 / e2.
+ If e1 and e2 are arrays, they must have the same dimension and the result will
+ be an array of this dimension with result[i] = e1[i] modulo e2[i].
+ If e1 or e2 is an array the function adapts itself.
+ WARNING : As this operation is NOT commutative the result will NOT be the same
+ if the array is in first or second position.
+abs : [ v -- |v| ]
+ take absolute value of the value on the top of the stack.
+neg : [ v -- -v ]
+ negates the value on the top of the stack. Equivalent to "-1 *".
+not : ( A -- notA )
+ replaces the boolean on the top of logical stack by his negation.
+or : ( A B -- AorB )
+ replaces the two booleans on the top of logical stack by the OR.
+over : [ E2 E1 -- E2 E1 E2 ]
+ duplicates the second number stack entry onto the top of the stack.
+pick : [ En ... E1 n -- En ... E1 En ]
+ copies the n-th number stack entry onto the top of the stack.
+ramp : [ n -- [1,2, ...,n] ]
+ builds an array with n elements and initialize it with a ramp (1 to n).
+roll : [ En En-1 ... E1 n -- En-1 ... E1 En ]
+ moves the n-th number stack entry to the top of the stack.
+rot : [ E3 E2 E1 -- E2 E1 E3 ]
+ rotates the third number stack entry to the top of the stack.
+rusage :
+ display a board of ressources usage.
+s_clear : [ e1 ... en -- ]
+ clears the number stack.
+sh :
+ puts nife in background and open a shell. To come back in the program just exit
+ the shell.
+sleep : [ n -- ]
+ sleep during n seconds.
+swap : [ E2 E1 -- E1 E2 ]
+ exchanges the top two number stack entries.
+time : [ -- N ]
+ puts the time in microseconds on the top of the stack.
+true : ( -- true )
+ puts true on the top of the logical stack.
+unroll : [ En-1 ... E2 E1 n -- E1 En-1 ... E2 ]
+ moves the top number stack entry to the n-th position on the stack.
+unrot : [ E3 E2 E1 -- E1 E3 E2 ]
+ rotates the top number stack entry to the third position on the stack. This is
+ the reverse effect of "rot". 
+xor : ( A B -- AxorB )
+ replaces the two booleans on the top of logical stack by the XOR.
+vers : [ -- version ]
+ puts the version value on the top of the stack.
+">v : { string -- }
+ initializes a variable with the top character stack entry.
+ The name of the variable must follow this instruction. His previous content is
+ lost.
+: :
+ begins a function definition which the name is the first word following it. The end is indicate by ;.
+:! :
+ begins a system function definition which the name is the first word following
+ it. The end is indicate by ;. A such function take place in the User System
+ functions list and cannot be removed.
+; :
+ ends a function definition that was begin by :.
+>v : [ E -- ]
+ initializes a variable with the top stack entry.
+ The name of the variable must follow this instruction. His previous content is
+ lost.
+?>v : ( boolean -- )
+ initializes a variable with the top logical stack entry.
+ The name of the variable must follow this instruction. His previous content is
+ lost.
+?console : [ n -- ]
+ displays the background console of task number n.
+?f :
+ display the function stack.
+?t :
+ display the task stack.
+?task_run : [ n -- ] ( -- true/false )
+ tests if the task number n is running and put a boolean on the logical stack.
+?v :
+ display the variable stack.
+Task : [ -- no_task ]
+ creates a task from a function. The name of the function must following it.
+ The avaibles names are thoses giving by ?f. In success, the task number is on
+ the numerical stack.
+Var :
+ creates an empty global variable which the name is the first word following it.
+ The variables are multiforms and can content scalar, array, boolean, string or
+ a function name. In this case, it is an executable variable.
+"Var :
+ creates an empty global variable which the name is on the character stack.
+ The variables are multiforms and can content scalar, array, boolean, string or
+ a function name. In this case, it is an executable variable.
+again :
+ use in function programmation to create an infinite loop. For example :
+ : f1 ... begin  ...  again ... ;
+ This must be done into a function (beetween : and ;).
+begin :
+ use in function programmation to create a loop. For example :
+ : f1 ... begin  ... [condition] while ... repeat ... ;
+ : f2 ... begin  ... [condition] until ... ;
+ or infinite loop :
+ : f3 ... begin  ...  again ... ;
+ This must be done into a function (beetween : and ;).
+break :
+ use in function programmation to exit a loop. For example :
+ : f1 ... begin  ... [condition] if ... break then ... again ... ;
+ This must be done into a function (beetween : and ;).
+del_func :
+ delete the more recent version of a function.
+ The name of the function must follow this instruction.
+del_afunc :
+ delete all functions beginning by a prefix.
+ The prefix of the function must follow this instruction.
+del_ofunc :
+ delete the oldest version of a function.
+ The name of the function must follow this instruction.
+del_task : [ n -- ]
+ delete the task number n.
+del_var :
+ delete a variable. The name of the variable must follow this instruction.
+else :
+ use to make a test. For example :
+ toto 1 > if 12 else -7 then
+ At execution time, if toto is greater than 1 12 is put on the stack else -7 is
+ put. Then dup is executed.
+ This must be done into a function (beetween : and ;).
+fdrop :
+ removes the top function stack entry. In fact, the last function created.
+fscan :
+ display the result of reverse engineering scanner for a function.
+ The name of the function must follow this instruction.
+if :
+ use to make a test. For example :
+ toto 1 > if 12 else -7 then
+ At execution time, if toto is greater than 1 12 is put on the stack else -7 is
+ put. Then dup is executed.
+ This must be done into a function (beetween : and ;).
+in :
+ used to complete the install commands.
+ Example : install f1 in var
+install :
+ installs a function in a variable. The name must follow this instruction.
+ This name will be search first in libraries and after in user functions.
+ Example : install drop in var
+install_f :
+ installs a function in a variable. The name must follow this instruction.
+ This name will be search first in user functions and after in libraries.
+ Example : install_f f1 in var
+install_v :
+ installs the content of a variable in another variable. The source name must
+ follow this instruction.
+ This name will be search only in variables list.
+ Example : install_v v1 in v2
+load :
+ loads a source file. The name of the file must follow this instruction.
+"load : { "filename" -- }
+ loads a source file taking the name of the file on the top of character stack.
+myself :
+ use in a function definition to call the function herself (recursive case).
+ This must be done into a function (beetween : and ;).
+repeat :
+ use in function programmation to create a loop. For example :
+ : fonction ... begin  ... [condition] while ... repeat ... ;
+ This must be done into a function (beetween : and ;).
+reset_var :
+ resets a variable. The name of the variable must follow this instruction.
+return :
+ ends the execution into a function.
+stop_task : [ n -- ]
+ stop the task number n.
+then :
+ use to make a test. For example :
+ toto 1 > if 12 else -7 then
+ At execution time, if toto is greater than 1 12 is put on the stack else -7 is
+ put. Then dup is executed.
+ This must be done into a function (beetween : and ;).
+until :
+ use in function programmation to create a loop. For example :
+ : f1 ... begin  ... [condition] until ... ;
+ This must be done into a function (beetween : and ;).
+var_down :
+ set DOWN execution of variables.
+ To execute an instruction seach first in user functions, and then in system
+ libraries, and finaly in variables.
+var_off :
+ set OFF execution of variables.
+ To execute an instruction seach first in user functions and then in system
+ libraries. No seach in variables.
+var_up :
+ set UP execution of variables.
+ To execute an instruction seach first in variables, then in user functions and
+ finaly in system libraries.
+while :
+ use in function programmation to create a loop. For example :
+ : fonction ... begin  ... [condition] while ... repeat ... ;
+ This must be done into a function (beetween : and ;).
+vdrop :
+ removes the top variable stack entry. In fact, the last variable created.
+>csv [ tab1 tab2 ... tabn n -- ] { "filename;libtabn; ... ;libtab1" -- }
+ create a file filename.csv with the n arrays on the top of the stack. The title of each line can be present after the filename without ".csv", separate by ';'.
+>net : [ E1 E2 ... En n -- ]
+ transfert the n elements from local stack to Net stack using NetKey.
+?n :
+ display the Net informations.
+?ns :
+ display the Net stack using NetKey.
+ndepth : [ -- Net_Stack_Depth ]
+ returns the number of entries on the Net stack using NetKey.
+NetKey : [ key -- ]
+ change the value of NetKey. It is a 32 bits INTEGER.
+NetErr : [ -- err_value ]
+ put the Net Error value on the top of the stack. It is the negative of NetKey!
+NetServer : { "ServerName" -- }
+ change the default NetServer (localhost).
+ndrop :
+ drop the elements on the Net stack using NetKey.
+net> : [ -- E1 E2 ... En ]
+ transfert all elements from Net stack to local stack using NetKey.
+netDt> : [ -- dt ]
+ get the dt value. It represents the difference between the clock of the network
+ and the local clock.
+ This value must be used before sending time value to the net stack, or after 
+ getting time value from the net stack. For examples :
+ On system A :
+ time netDt> + 1 >net # transform the local time in network scale and send it.
+ On system B :
+ net> netDt> -        # get the time of A and translate it in local scale.
+netOff :
+ disconnect from Nife network.
+netOn : { "UserName" -- }
+ connect to Nife network using the NetServer variable. The UserName is memorized
+ and can be get by Me.
+Me : { -- "UserName" }
+ put on the top of character stack the username. It is the name given with the
+ last netOn command, or, if absent, the content of environment variables, in
+ order : NIFENAME, LOGNAME, USERNAME, USER or "Nobody" if variables are absent.
+netExec : { "func_name" "UserName" -- }
+ send a Nife RPC call to execute the function func_name on the system Username.
+ The result will be send on the network using the current NetKey. If UserName is
+ not existant, an error occurs. But if func_name does not exist, or fails in the
+ execution, the negative value of NetKey (NetErr) is returned on the net stack.
+netCompile : { "source_file" "UserName" -- }
+ send a Nife source file to compile it (like load) on the system Username.
+ If source file does not exist, or UserName is absent an error occurs. If the
+ file containts function call, the result will be send on the network using
+ the current NetKey.
+ If an error occurs during the compilation or the execution, the negative value
+ of NetKey (NetErr) is returned on the net stack.
+srusage :
+ display a board of NetServer ressources usage.
+stopServer :
+ Tell the NetServer to stop after netOff if no other user is present.
+[]-sub : [ [v1,v2,...,vl,...,vn] l -- [v1,v2,...,vl] ]
+ extract a left sub-array from an array. If l > n fill zeros on left side.
+[]sub : [ [vn,...,vl,...,v2,v1] l -- [vl,...,v2,v1] ]
+ extract a right sub-array from an array. If l > n fill zeros on right side.
+*[]-sub : [ tab1 tab2 ... tabN N l -- tabl1 tabl2 ... tablN ]
+ extract a left sub-array like sub[] from N arrays. The N arrays have l elements after execution.
+*[]sub : [ tab1 tab2 ... tabN N l -- tabl1 tabl2 ... tablN ]
+ extract a right sub-array like []sub from N arrays. All arrays have l elements after execution.
+do : [ limit val -- ]
+ use in function programmation to create a loop with an index going from val to
+ limit. Use loop for auto-convergent loop. For examples :
+ : f1 5 0 do  ... loop ... ; 
+ a loop with an index going from 0 to 4 incremented by 1 (i = 0,1,2,3,4).
+ : f 0 5 do  ... loop ... ; 
+ a loop with an index going from 5 to 1 decremented by 1 (i = 5,4,3,2,1).
+ : f2 15 1 do  ... 3 +loop ... ; 
+ a loop with an index going from 1 to 15 incremented by 3 (i = 1,4,7,10,13).
+ This must be done into a function (beetween : and ;).
+loop :
+ use in function programmation to create an auto-convergent loop with do using
+ the default 1 by 1 progression. For example :
+ : f 5 0 do  ... loop ... ; 
+ a loop with an index going from 0 to 4 incremented by 1 (i = 0,1,2,3,4).
+ : f 0 5 do  ... loop ... ; 
+ a loop with an index going from 5 to 1 decremented by 1 (i = 5,4,3,2,1).
+ This must be done into a function (beetween : and ;).
++loop : [ inc -- ]
+ use in function programmation to create a loop with do using the value inc for
+ incrementation. For example :
+ : f 15 1 do  ... 3 +loop ... ; 
+ a loop with an index going from 1 to 15 incremented by 3 (i = 1,4,7,10,13).
+ This must be done into a function (beetween : and ;).
+ndo : [ n -- ]
+ returns the number of do-loop in the running context.
+ It's usefull before using the indexes I J or K.
+I : [ -- val ]
+ returns the value of the index of the current do-loop.
+ This must be done into a function (beetween : and ;).
+J : [ -- val ]
+ returns the value of the index of the do-loop containing the current one.
+ This must be done into a function (beetween : and ;).
+K : [ -- val ]
+ returns the value of the index of the second level do-loop containing the
+ current one.
+ This must be done into a function (beetween : and ;).
+do_next : [ -- ]
+ free-context instruction to bypass the end of a loop and go to the next step.
+do_leave : [ -- ]
+ free-context instruction to finish the current loop.
+*do_leave : [ n -- ]
+ free-context instruction to finish the n currents loops.
+?gp :
+ display the gplot stack.
+del_gplot : [ n -- ]
+ delete the gplot number n. The file is deleted but the screen is keeped.
+gplot : { "filename" "title" -- }
+ create a gplot for one plot having as title "title" and working with the file
+ filename.
+gplotM : [ n -- ] { "filename" "title" -- }
+ create a gplot for n (Multiple) plots having as title "title" and working with
+ the file filename.
+gplotCmd : [ n -- ] { "options" -- }
+ updating the string command option of gplot number n.
+gplotClear : [ n -- ]
+ clear the file of the gplot number n.
+gplotAdd : [ tab n -- ]
+ add at the end of the file of gplot number n, a line with data of tab.
+gplotRepl : [ tab n -- ]
+ remove the first line and add at the end of the file of gplot number n, a line
+ with data of tab.
+gplotRaz :
+ remove all gplots. The files are deleted but the screens are keeped.
+?dev :
+ lists all the devices available. The DID is at the beginning of the lines.
+dev_dflt : [ DID SID CID -- ]
+ defines default values in order Device ID, Subdevice ID and Channel ID.
+?dev_dflt :
+ shows informations about the default values device (DID, SID, CID).
+dev_dflR : [ -- VAL ]
+ read the device using the default values DID, SID and CID.
+dev_dflW : [ VAL -- ]
+ write the value VAL on the device using the default values DID, SID and CID.
+dev_info : [ DID -- ]
+ shows informations about device DID.
+dev_read : [ DID SID CID -- VAL ]
+ read the device DID, sub-device SID and channel CID, and put the value on the
+ numeric stack.
+dev_write : [ VAL DID SID CID -- ]
+ write the value VAL on the device DID, subdevice SID and channel CID.
+cos : [ v -- cos(v) ]
+ compute the cosinus of the value on the top of the stack.
+sin : [ v -- sin(v) ]
+ compute the sinus of the value on the top of the stack.
+onerr: :
+ defines, into a function (beetween : and ;), a label for programming an errors
+ treatment in case of an error occurs.
+end: :
+ defines, into a function (beetween : and ;), a label for programming a end
+ treatment. In case of an error occurs, theses instructions will be executed if
+ this label is AFTER the onerr: label.
+goto_end :
+ instruction, into a function (beetween : and ;), to go to the end: label.
+?err : ( -- T/F )
+ tests if an error have occured and put true or false, on the logical stack.
+?lasterr :
+ displays the last error elements.
+messerr : [ n -- ] { -- "error message" }
+ puts on the character stack the error message number n.
+noerr : [ -- n ]
+ gives the number of last error.
+
