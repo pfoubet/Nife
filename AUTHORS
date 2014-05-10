@@ -1,22 +1,22 @@
-This file lists people who have made significant contribution in the nife
+This file lists people who have made significant contribution in the Nife
 project.  Please see the ChangeLog for specific changes by author.
 -------------------------------------------------------------------------
 
-Patrick H. E. Foubet <patrick.foubet@nife-project.org>
+Patrick H. E. Foubet <nife@seriane.fr>
         * Original program author, stable series maintainer.
         * Cohesion of language supervisor. Multiple platform maintainer.
-        * Stack to Stack protocol developper, and much more.
+        * Stack to Stack protocol developer, and much more.
 
-Christophe Ondrejec <christophe.ondrejec@nife-project.org>
-        * Administrator of the site nife-project.org.
+Christophe Ondrejec <ondrejec@seriane.fr>
+        * Administrator of the site k-nife.org.
         * Internationalization support head.
         * Package tester.
 
-Claude Mauvais <claude.mauvais@.nife-project.org>
-        * Mathematical functions supervisor and developper.
+Claude Mauvais <mauvais@seriane.fr>
+        * Mathematical functions supervisor and developer.
         * Package tester.
 
-Bruno Guilbert <bruno.guilbert@nife-project.org>
-        * Devices interface tester and developper.
+Bruno Guilbert <guilbert@seriane.fr>
+        * Devices interface tester and developer.
         * Package tester.
 

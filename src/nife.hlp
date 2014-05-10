@@ -639,4 +639,15 @@ messerr : [ n -- ] { -- "error message" }
  puts on the character stack the error message number n.
 noerr : [ -- n ]
  gives the number of last error.
+?i2c :
+ lists all the I2C buses available. The I2C-ID is at the beginning of the lines.
+i2c_info : [ I2C-ID -- ]
+ shows informations (matrix) about the I2C-ID interface.
+i2c_write : [ Value Offset Address I2C-ID -- ]
+ write Value at data-address Offset for chip-address Address of I2C interface
+ I2C-ID.
+i2c_read : [ Offset Address I2C-ID -- Value ]
+ read at data-address Offset for chip-address Address of I2C interface I2C-ID.
+ If Offset equal -1, the read is done directly at Address.
+
 

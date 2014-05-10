@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -106,9 +106,19 @@ static char *TabErr[] = {
 	"too many loads",
 	"label onerr: already found",
 	"label end: already found",
-	"inside compilation aborted"
+	"inside compilation aborted",
+        "I2C is not available",
+        "invalid I2C bus",                              /* 50 */
+        "error open I2C device",
+	"could not get I2C adapter functionality matrix",
+        "bad I2C address",
+        "bad I2C offset",
+	"value out of range",
+	"I2C write failed",
+	"I2C read failed",
+        "-"
 };
-#define ERR_MAX 48
+#define ERR_MAX 57
 
 void stopErr(char *M, char *F)
 {

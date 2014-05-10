@@ -56,7 +56,8 @@ am_nife_OBJECTS = nife.$(OBJEXT) mth.$(OBJEXT) err.$(OBJEXT) \
 	stackL.$(OBJEXT) stackC.$(OBJEXT) stackF.$(OBJEXT) \
 	stackV.$(OBJEXT) tasks.$(OBJEXT) libmath.$(OBJEXT) \
 	libmathc99.$(OBJEXT) help.$(OBJEXT) dev.$(OBJEXT) \
-	net.$(OBJEXT) gplot.$(OBJEXT) scs.$(OBJEXT) debug.$(OBJEXT)
+	i2c.$(OBJEXT) net.$(OBJEXT) gplot.$(OBJEXT) scs.$(OBJEXT) \
+	debug.$(OBJEXT)
 nife_OBJECTS = $(am_nife_OBJECTS)
 nife_LDADD = $(LDADD)
 DEFAULT_INCLUDES = -I. -I$(srcdir) -I$(top_builddir)
@@ -167,6 +168,7 @@ nife_SOURCES = nife.c nife.h conf.h \
              libmathc99.c \
              help.c help.h \
              dev.c dev.h \
+             i2c.c i2c.h \
              net.c net.h \
              gplot.c gplot.h \
              scs.c scs.h \
@@ -245,6 +247,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/gplot.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/help.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/histo.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/i2c.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/lib.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmath.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libmathc99.Po@am__quote@

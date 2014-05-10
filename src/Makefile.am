@@ -19,6 +19,7 @@ nife_SOURCES = nife.c nife.h conf.h \
              libmathc99.c \
              help.c help.h \
              dev.c dev.h \
+             i2c.c i2c.h \
              net.c net.h \
              gplot.c gplot.h \
              scs.c scs.h \

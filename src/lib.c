@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "libmath.h"
 #include "help.h"
 #include "dev.h"
+#include "i2c.h"
 #include "net.h"
 #include "gplot.h"
 #include "debug.h"
@@ -487,6 +488,10 @@ void initLib(void)
     addFonD("?dev_dflt",IF_devShowDflt);
     addFonD("dev_dflW",IF_devDflW);
     addFonD("dev_dflR",IF_devDflR);
+    addFonD("?i2c",IF_listI2C);
+    addFonD("i2c_info",IF_showI2C);
+    addFonD("i2c_read",IF_I2CRead);
+    addFonD("i2c_write",IF_I2CWrite);
     addFonN("?n",IF_netList);
     addFonN("netOn",IF_netOn);
     addFonN("netOff",IF_netOff);

@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([nife], [0.44], [nife@seriane.fr])
+AC_INIT([nife], [0.47], [nife@seriane.fr])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR([src/tasks.c])
@@ -18,6 +18,7 @@ AC_PROG_MAKE_SET
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h netdb.h stdlib.h string.h strings.h sys/socket.h sys/time.h termios.h unistd.h])
 AC_CHECK_HEADERS([pthread.h])
 AC_CHECK_HEADERS([comedilib.h])
+AC_CHECK_HEADERS([linux/i2c-dev.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL

@@ -1,5 +1,16 @@
 History of Nife releases :
 
+2014-05-10 - Nife 0.47 is released.
+	* Beginning an I2C interface for Linux systems, inspired by the Linux
+	  package i2c-tools.
+	* The I2C interface has been developped and tested by P. Foubet
+	  with his students Elodie Kerfourn and Aymeric Diankouika. They
+	  connected a Raspberry Pi with an Arduino board through the I2C bus
+	  and wrote a Nife program to highlight the data exchange between the
+	  two elements.
+	* The installation has been tested by Bernard Bonno on a Raspberry Pi
+          board Model A with Porteus ARM (based on a Slackware ARM 14.0).
+
 2013-09-25 - Nife 0.44 is released.
 	* Fixed a bug causing a "segmentation violation" during compilation
           of the Nife code on some systems as Raspberry Pi A and B and others.

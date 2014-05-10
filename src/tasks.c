@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -144,8 +144,8 @@ int i;
             return;
          }
       }
+      TASKp[i] = 0;
    }
-   TASKp[i] = 0;
 }
 
 void IF_showCons( void)

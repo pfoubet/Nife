@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2013  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -106,7 +106,7 @@ char Lib[8];
 #ifdef _MULTI_THREADING_
     strcpy(Lib,"mt-");
 #endif
-    printf("nife (Networking Industrial Forth-like Environment) - version %s%s-%ld/%ld\n\t (c) S.E.R.I.A.N.E. 2009-13\n",Lib,VERSION,sizeof(long)*8,sizeof(double)*8);
+    printf("nife (Networking Industrial Forth-like Environment) - version %s%s-%ld/%ld\n\t (c) S.E.R.I.A.N.E. 2009-2014\n",Lib,VERSION,sizeof(long)*8,sizeof(double)*8);
 }
 
 int isSepa(char c, int m)
