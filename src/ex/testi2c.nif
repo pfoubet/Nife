@@ -1,0 +1,30 @@
+
+: test1
+    200 0 do
+     " i vaut : " "type I . 
+     I 0x12 1 i2c_read 
+     " et on lit : " "type . cr
+     1 sleep
+   loop
+;
+
+: test2
+    200 0 do
+     " i vaut : " "type I . 
+     I I 0x12 1 i2c_write
+     " on ecrit cette valeur a cette adresse  " "type 
+     I 0x12 1 i2c_read 
+     " et on lit : " "type . cr
+     1 sleep
+   loop
+;
+
+# fonction qui envoie une valeur a l'Arduino et qui recupere le resultat du calcul
+# on suppose ici que le I2C-ID est egal a 1 car Model B
+: arduino # [ val chip-address - resultat ]
+  dup unrot dup 1 i2c_write
+  1 sleep # a voir si c'est bien necessaire
+  -1 swap 1 i2c_read
+;
+
+   
