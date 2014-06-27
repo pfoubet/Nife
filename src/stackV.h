@@ -22,6 +22,8 @@ extern void IF_debVar(void);
 extern void IF_debVarCS(void);
 extern void IF_show_stackV(void);
 extern void IF_delVar(void);
+extern void dump_stackV(int fd);
+extern void restore_stackV(int fd);
 extern void rmLastVar(void);
 extern int IF_execVar(char *L);
 extern int isVarChar(void *A);

@@ -31,14 +31,17 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "err.h"
 #include "lib.h"
 #include "stackC.h"
+#include "stackV.h"
 #include "stackF.h"
 #include "histo.h"
 #include "tasks.h"
 #include "debug.h"
+#include "help.h"
 #include "net.h"
 #include "gplot.h"
 
 static char sepa[] = " \t\n";
+static int SigOn=0; /* only for interractive task */
 
 void putTrSuite(void (*f)(char*))
 {
@@ -81,7 +84,8 @@ int status;
        break;
    case SIGSEGV :
        printf("Segmentation Error !!\n");
-       exit(1);
+       termReset();
+       _exit(1);
        break;
    case SIGPIPE :
        printf("Pipe is broken");
@@ -92,8 +96,10 @@ int status;
    case SIGALRM :
        printf("Compilation");
        break;
+   case SIGINT :
+       if (!SigOn) return;
    default :
-       printf("Signal %d",S);
+       printf("Signal %d !\n",S);
        break;
    }
    siglongjmp(ENV_INT,1);
@@ -127,12 +133,14 @@ PFC tS;
        interInfos("traiteMot",M);
        return 1;
     }
+    if (!ITASK) SigOn=1;
     /*  printf("traiteMot <%s> iTS=%d\n",M,iTS); */
     tS = getTrSuite();
     if (tS != (PFC)NULL) tS(M);
     else
        if (! execLib(M))  { Err=1; messErr2(10,M); }
     if (ITASK) exit(0); /* non interpretation in task ! */
+    if (!ITASK) SigOn=0;
     return Err;
 }
 
@@ -198,6 +206,58 @@ int i=0;
     }
 }
 
+struct DumpEnt {
+    double V;
+    char L[4];
+    long Scs;
+};
+
+/* Dump and Restore Nblf : Nife Binary Linkable Format */
+
+static void restoreFic(char *L)
+{
+int fd;
+struct DumpEnt E;
+    dropTrSuite();
+    if ((fd = open(L,O_RDONLY)) == -1) {
+        perror(L);
+        messErr(43);
+    } else {
+      if (read(fd,(void*)&E, sizeof(E)) != sizeof(E)) {
+        printf("File too small !\n");
+        messErr(59);
+      } else {
+         if (strncmp(E.L,"Nblf", 4) == 0) {
+            if (E.V == atof(VERSION)) {
+               restore_stackV(fd);          
+               restore_stackF(fd);          
+            } else printf("This file is just available for Nife v %g !\n",E.V);
+         } else printf("Not a NBLF File !\n");
+         close(fd);
+      }
+
+    }
+}
+
+static void dumpFic(char *L)
+{
+int fd;
+struct DumpEnt E;
+    dropTrSuite();
+    if ((fd = open(L,O_CREAT|O_WRONLY,0600)) == -1) {
+        perror(L);
+        messErr(58);
+    } else {
+      strncpy(E.L,"Nblf", 4);
+      E.V=atof(VERSION);
+      E.Scs=(long)getScs();
+      write(fd,(void*)&E, sizeof(E));
+      dump_stackV(fd);
+      dump_stackF(fd);
+      close(fd);
+    }
+}
+
 static void lectFic(char *L)
 {
 int fd;
@@ -259,6 +319,16 @@ void *C;
     }
 }
 
+void IF_Dump(void)
+{
+      putTrSuite(dumpFic);
+}
+
+void IF_Restore(void)
+{
+      putTrSuite(restoreFic);
+}
+
 void IF_Load(void)
 {
       putTrSuite(lectFic);
@@ -277,7 +347,12 @@ char *dirW = ".nife";
        fprintf(stderr,"Nife open-source don't runs on these machine !\n");
        return(2);
     }
+    signal(SIGQUIT,SIG_IGN);
+    signal(SIGABRT,SIG_IGN);
     signal(SIGUSR1,SIG_IGN);
+    signal(SIGCONT,SIG_IGN);
+    signal(SIGSTOP,SIG_IGN);
+    signal(SIGTSTP,SIG_IGN);
     signal(SIGINT,Interrupt);
     signal(SIGTERM,Interrupt);
     signal(SIGPIPE,Interrupt);
@@ -302,8 +377,10 @@ char *dirW = ".nife";
     if (N==2) {
        IF_Load();
        lectFic(P[1]);
-    } else
+    } else {
       printf("Welcome to Nife : Just stack it !\n");
+      IF_helpS();
+    }
     while (RUN) {
        if ((FD_IN+iTERM) == 0) {
           printf("> ");

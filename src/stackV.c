@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 /* stackV.c */
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 #include <string.h>
 #include <strings.h>
 
@@ -153,6 +154,44 @@ struct Var * N;
     printf("<end of variable list>\n");
 }
 
+void dump_stackV(int fd)
+{
+void * Next, *A;
+char * noms, *pn;
+struct Var * N;
+long n, l, i;
+    n=l=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       N = (struct Var*) Next;
+       n++;
+       l += (strlen(N->l)+1);
+       Next = N->n;
+    }
+    l++;
+    write(fd, (void*)&n, sizeof(n));
+    if (n>0) {
+        if ((A = malloc(l)) == NULL) stopErr("dump_stackV","malloc");
+        noms = (char*)A;
+        pn = noms;
+        Next = stackV;
+        while (Next != VIDE) {
+           N = (struct Var*) Next;
+           strcpy(pn,N->l);
+           pn += (strlen(N->l)+1);
+           Next = N->n;
+        }
+        /* on remonte la liste */
+        while (pn > noms) {
+           pn -= 2;
+           while (*pn != '\0') pn--;
+           pn++;
+           write (fd,pn,strlen(pn)+1);
+        } 
+        free(A);
+    }
+}
+
 static void newVar(char * S)
 {
 char Lib[LDFLT+1];
@@ -160,6 +199,19 @@ char Lib[LDFLT+1];
     Lib[LDFLT]='\0';
     initVar(Lib);
     dropTrSuite();
+}
+
+void restore_stackV(int fd)
+{
+long n=0, i;
+char Lib[LDFLT+2], *b;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    *Lib=' ';
+    for (i=0; i<n; i++) {
+        b=Lib;
+        while(*b != '\0') read(fd,++b,1);
+        initVar(Lib+1);
+    }
 }
 
 void IF_debVar(void)

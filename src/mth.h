@@ -37,7 +37,7 @@ extern void TH_init(void);
 extern pthread_key_t k_Base, k_StkN, k_FIns, k_NetK, k_NLig, k_NTab, k_Vars,
        k_FTyp, k_Doub, k_Echo, k_StkL, k_iStL, k_StkC, k_iStC, k_bufC, k_Run,
        k_WPid, k_fEnC, k_sEnC, k_inSP, k_iTs, k_FdIn, k_bufP, k_bufP2, k_trSu,
-       k_EnvI;
+       k_EnvI, k_modPr;
 
 #define StackN *((void**)pthread_getspecific(k_StkN))
 #define _MODIF_STACKN_(x)  *((void**)pthread_getspecific(k_StkN))=x
@@ -45,6 +45,9 @@ extern pthread_key_t k_Base, k_StkN, k_FIns, k_NetK, k_NLig, k_NTab, k_Vars,
 
 #define DOUBLE  *((bool*)pthread_getspecific(k_Doub))
 #define _MODIF_DOUBLE_(x) *((bool*)pthread_getspecific(k_Doub))=x
+
+#define MODEPR  *((bool*)pthread_getspecific(k_modPr))
+#define _MODIF_MODEPR_(x) *((bool*)pthread_getspecific(k_modPr))=x
 
 #define ECHOOFF  *((bool*)pthread_getspecific(k_Echo))
 #define _MODIF_ECHOOFF_(x) *((bool*)pthread_getspecific(k_Echo))=x
@@ -110,6 +113,7 @@ extern pthread_key_t k_Base, k_StkN, k_FIns, k_NetK, k_NLig, k_NTab, k_Vars,
 
 extern void * G_StackN;
 extern int G_Double;
+extern short G_ModePr;
 extern int G_EchoOff;
 extern int G_NBTAB;
 extern int G_NBLIG;
@@ -178,6 +182,9 @@ extern jmp_buf G_ENV_INT;
 
 #define DOUBLE G_Double
 #define _MODIF_DOUBLE_(x) G_Double=(x)
+
+#define MODEPR G_ModePr
+#define _MODIF_MODEPR_(x) G_ModePr=(x)
 
 #define ECHOOFF G_EchoOff
 #define _MODIF_ECHOOFF_(x) G_EchoOff=(x)

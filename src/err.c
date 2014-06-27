@@ -116,9 +116,12 @@ static char *TabErr[] = {
 	"value out of range",
 	"I2C write failed",
 	"I2C read failed",
+	"binary dump error",
+	"binary restore error",
+	"-",                    /* 60 */
         "-"
 };
-#define ERR_MAX 57
+#define ERR_MAX 59
 
 void stopErr(char *M, char *F)
 {

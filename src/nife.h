@@ -31,6 +31,8 @@ typedef unsigned char bool;
 
 extern int isSepa(char c, int m);
 extern void IF_about(void);
+extern void IF_Dump(void);
+extern void IF_Restore(void);
 extern void IF_Load(void);
 extern void IF_LoadCS(void);
 extern void * makeFunction(char *S);

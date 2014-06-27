@@ -45,6 +45,21 @@ char * L;
     if (Debug) printf("ON"); else printf("OFF");
     printf("\nDefault type=");
     if (DOUBLE) printf("REAL"); else printf("INTEGER");
+    printf("\nPRINT MODE : ");
+    switch(MODEPR) {
+       case 1 :
+         printf("HEX");
+         break;
+       case 2 :
+         printf("OCT");
+         break;
+       case 3 :
+         printf("BIN");
+         break;
+       default :
+         printf("DEC");
+         break;
+    }
     printf("\nDefault echo=");
     if (ECHOOFF) printf("OFF"); else printf("ON");
     printf("\nNetServer : \"%s\"",NetServer);
@@ -76,6 +91,11 @@ char * L;
 
 void IF_REAL(void) { _MODIF_DOUBLE_(1); }
 void IF_INTEGER(void) { _MODIF_DOUBLE_(0); }
+
+void IF_DEC(void) { _MODIF_MODEPR_(0); }
+void IF_HEX(void) { _MODIF_MODEPR_(1); }
+void IF_OCT(void) { _MODIF_MODEPR_(2); }
+void IF_BIN(void) { _MODIF_MODEPR_(3); }
 
 void IF_ECHOFF(void) { _MODIF_ECHOOFF_(1); }
 void IF_ECHOON(void) { _MODIF_ECHOOFF_(0); }
@@ -313,6 +333,46 @@ void IF_stack_clear(void)
     while (StackN != VIDE) dropElt();
 }
 
+static printLL(char * F, long long l)
+{
+char c, buf[68];
+unsigned long long v;
+int i;
+   switch(MODEPR) {
+   case 1 :
+      c='x';
+      printf("0x");
+      break;
+   case 2 :
+      c='o';
+      printf("0");
+      break;
+   case 3 :
+      c='b';
+      break;
+   default :
+      c='d';
+   }
+   if (c =='b') {
+     if (l) {
+      v = (unsigned long long)l;
+      buf[67]='\0';
+      i = 67;
+      while (v) {
+        i--;
+        if (v & 1) buf[i]='1';
+        else buf[i]='0';
+        v >>= 1;
+      }
+      printf("%s ",buf+i);
+     } else printf("0 ");
+   } else {
+      strcpy(buf,F);
+      buf[3]=c;
+      printf(buf,l);
+   }
+}
+
 #define ELT_POINT -9
 static void printElt(struct Num * N, long I)
 {
@@ -341,13 +401,16 @@ double *d;
             printf("%g (REAL)[%ld]",*(&N->d+(n-1)),n);
          }
    } else {
-         if (n==1) printf("%lld (INTEGER)",N->l);
-         else  {
+         if (n==1) {
+               printLL("%lld ",N->l);
+               printf("(INTEGER)");
+         } else  {
             l = &N->l;
-            for(i=0;i<m;i++) printf("%lld ",*l++);
+            for(i=0;i<m;i++) printLL("%lld ",*l++);
             if (I==ELT_POINT) return;
             if (n > nt) printf("... ");
-            printf("%lld (INTEGER)[%ld]",*(&N->l+(n-1)),n);
+            printLL("%lld ",*(&N->l+(n-1)));
+            printf("(INTEGER)[%ld]",n);
          }
    }
    if ((IB>0) && (N->t&MSK_V)) printf(" Var. %s",varByAddrA((void*)N));

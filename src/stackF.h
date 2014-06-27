@@ -117,4 +117,7 @@ extern void IF_EXEK(void);
 extern void IF_debBackC(void);
 extern void IF_debBackC1(void);
 
+extern void dump_stackV(int fd);
+extern void restore_stackV(int fd);
+
 #endif

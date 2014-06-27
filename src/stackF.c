@@ -571,7 +571,7 @@ struct Fct * FR;
        switch((Code)*C) {
        case T_ONER :
            if (noErr()==0) { /* jmp end: */
-               if (Ea) C = D+Ea;
+               if (Ea>ea) C = D+Ea;
                else C = F; /* to break */
            } else {
              if (OnErr==0) {
@@ -1330,4 +1330,58 @@ void IF_debBackC1(void)
     putTrSuite(suiteBackC1);
 }
 
+void dump_stackF(int fd)
+{
+long n=0, i, j, v, vi;
+int *av;
+void *Next, *A;
+struct Fct * N;
+char * C, *F, *D;
+    Next = stackF;
+    while (Next != VIDE) {
+       N = (struct Fct*) Next;
+       n++;
+       Next = N->n;
+    }
+    write(fd, (void*)&n, sizeof(n));
+    for (i=n; i>0; i--) {
+        Next = stackF;
+        j=0;
+        while (Next != VIDE) {
+           N = (struct Fct*) Next;
+           j++;
+           if (i==j) break;
+           Next = N->n;
+        }
+        write(fd, (void*)&(N->typ), sizeof(N->typ));
+        write(fd, (void*)(N->l), strlen(N->l)+1);
+        A = N->c;
+        av = (int*)A;
+        vi = (long)*av++; /* i */
+        write(fd, (void*)&v, sizeof(v));
+        v = (long)*av++; /* ea */
+        write(fd, (void*)&v, sizeof(v));
+        v = (long)*av++; /* Ea */
+        write(fd, (void*)&v, sizeof(v));
+        C = (char*)A+(3*sizeof(int));
+        D = C;
+        F = C+vi;
+    }
+}
+
+
+void restore_stackF(int fd)
+{
+long n=0, i;
+short typ;
+char Lib[LDFLT+2], *b;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    /* printf("Il y a %ld fonctions !\n",n); */
+    for (i=0; i<n; i++) {
+        read(fd, (void*)&typ, sizeof(typ));
+        b=Lib;
+        while(*b != '\0') read(fd,++b,1);
+        /* printf("Fct %s (%d)\n", Lib+1, typ); */
+    }
+}
 

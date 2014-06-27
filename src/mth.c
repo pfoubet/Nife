@@ -38,6 +38,7 @@ struct TH_Base {
    short    NbTab;
    short    Vars;
    short    FcType;
+   short    ModePr;
    bool     stk_L[LSTACKL];
    bool     Double;
    bool     EchoOff;
@@ -74,6 +75,7 @@ pthread_key_t
     k_Vars,       /* VARS  */
     k_FTyp,       /* FCT_TYP  */
     k_Doub,       /* Double On/Off */
+    k_modPr,      /* Mode Print Integer (Dec=0, Hex=1, Oct=2, Bin=3)  */
     k_Run,        /* RUN On/Off */
     k_WPid,       /* WAITPID On/Off */
     k_fEnC,       /* fctEnCours On/Off */
@@ -104,6 +106,7 @@ static void make_keys()
    pthread_key_create(&k_Vars, NULL);
    pthread_key_create(&k_FTyp, NULL);
    pthread_key_create(&k_Doub, NULL);
+   pthread_key_create(&k_modPr, NULL);
    pthread_key_create(&k_Run, NULL);
    pthread_key_create(&k_WPid, NULL);
    pthread_key_create(&k_fEnC, NULL);
@@ -133,6 +136,7 @@ struct TH_Base * A;
         A->FcType = 0;
         A->EchoOff = 0;
         A->Double = 0;
+        A->ModePr = 0;
         A->Run = 1;
         A->WaitPid = 0;
         A->fctEnC = 0;
@@ -151,6 +155,7 @@ struct TH_Base * A;
         pthread_setspecific(k_FTyp, (void*)&(A->FcType));
         pthread_setspecific(k_Echo, (void*)&(A->EchoOff));
         pthread_setspecific(k_Doub, (void*)&(A->Double));
+        pthread_setspecific(k_modPr, (void*)&(A->ModePr));
         pthread_setspecific(k_StkL, (void*)(A->stk_L));
         pthread_setspecific(k_iStL, (void*)&(A->i_stkL));
         pthread_setspecific(k_StkC, (void*)(A->stk_C));
@@ -184,7 +189,8 @@ int G_EchoOff=0; /* 0 si echo on, 1 si echo off */
 int G_NBTAB=6;   /* nb d'elements de tableau affiches */
 int G_NBLIG=10;  /* nb de lignes du stack affichees */
 short G_VARS=1,  /* 0 VAR_OFF , 1 VAR_DOWN (default), 2 VAR_UP */
-          G_FCT_TYP=0;  /* 0 None (default) , 1 Lib Fct , 2 User Fct */
+      G_ModePr=0,  /* 0 DEC(default), 1 HEX, 2 OCT, 3 BIN */
+      G_FCT_TYP=0;  /* 0 None (default) , 1 Lib Fct , 2 User Fct */
 void * G_F_INS=VIDE; /* fct lib ou usr a installer */
 uint32_t G_NetKey=0;
 bool G_stackL[LSTACKL];

@@ -168,10 +168,13 @@ void termInit(void)
     t1.c_iflag &= ~(IGNBRK | BRKINT | PARMRK | ISTRIP
                            | INLCR | IGNCR | ICRNL | IXON);
     /* t1.c_oflag &= ~OPOST; */
-    t1.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN);
+    /* t1.c_lflag &= ~(ECHO | ECHONL | ICANON | ISIG | IEXTEN); */
+    t1.c_lflag &= ~(ECHO | ECHONL | ICANON | IEXTEN);
     t1.c_cflag &= ~(CSIZE | PARENB);
     t1.c_cflag |= CS8;
     if (tcsetattr(iTERM, TCSAFLUSH, &t1) == -1) perror("tcsetattr"); /* raw */
+    /* clear screen */
+    system("clear");
 }
 
 void termReset(void)
@@ -234,6 +237,10 @@ unsigned int j;
          d++;
      } else {
          switch (c) {
+            /* Ctrl C
+            case '\003' : 
+              kill(getpid(), SIGINT);
+              break; */
             case '\t': /* tab */
               if (d>b) {
                  *d='\0';

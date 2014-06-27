@@ -124,6 +124,20 @@ static void addInst(char *l, void (*f)(void))
 
 static char **ListFonc = (char**)NULL;
 
+static void show_lib_addr (void)
+{
+int i,j=0;
+    for (i=0;i<NBFonc;i++) {
+        printf("%-13s 0x%.8lx ",Fonctions[i].nam,(unsigned long)Fonctions[i].fct);
+        j++;
+        if (j == 3) {
+           j=0;
+           printf("\n");
+        }
+    }
+    if (j) printf("\n");
+}
+
 static void Show_library(int NbF)
 {
 int i,j=0;
@@ -342,6 +356,7 @@ void initLib(void)
     addFonP("df_stop",IF_DF_STOP);
     addFonc("?ls",IF_show_stackL);
     addFonc("?s",IF_show_stack);
+    /* addFonc("?libX",show_lib_addr); for debugging */
     addFonc("?libs",IF_show_liball);
     addFonc("?lib",IF_show_libstd);
     addFonc("?libM",IF_show_libmath);
@@ -358,6 +373,10 @@ void initLib(void)
     addFonc("cs_clear",IF_stackC_clear);
     addFonc("REAL",IF_REAL);
     addFonc("INTEGER",IF_INTEGER);
+    addFonc("DEC",IF_DEC);
+    addFonc("HEX",IF_HEX);
+    addFonc("OCT",IF_OCT);
+    addFonc("BIN",IF_BIN);
     addFonc("echo_on",IF_ECHOON);
     addFonc("echo_off",IF_ECHOFF);
     addFonc("DEBUG_I/O",D_Update);
@@ -421,6 +440,8 @@ void initLib(void)
     addFonc("about",IF_about);
     addFonc("vers",IF_vers);
     addFonE("load",IF_Load, F_PROG);
+    addFonE("dump",IF_Dump, F_PROG);
+    addFonE("restore",IF_Restore, F_PROG);
     addFonP("\"load",IF_LoadCS);
     addFonP("\"exec",IF_ExecCS);
     addFonP("\"execf",IF_ExecCSf);

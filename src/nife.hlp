@@ -1,3 +1,4 @@
+ Try "help help" to learn more about Nife.
 "  { -- string }
  begins a string wich is terminated by itself. The first blank is a separator.
  The character \ masks the character " as end of string.
@@ -195,6 +196,14 @@
  display the list of constants of the system environment.
 DEBUG_I/O :
  toggle to set debug mode on or off.
+DEC :
+ sets the default print mode for integers to decimal.
+HEX :
+ sets the default print mode for integers to hexadecimal.
+OCT :
+ sets the default print mode for integers to octal.
+BIN :
+ sets the default print mode for integers to binary.
 INTEGER :
  sets the default type to INTEGER.
 NBLIG : [ n -- ]
@@ -260,6 +269,15 @@ false : ( -- false )
  puts false on the top of the logical stack.
 help :
  this help !! Need a word following.
+ All the words available in Nife are listed with "?libs" command.
+ See also "?lib", "?libP", ... for more details.
+ For each instruction this help tell you exactly what happens on the stacks :
+ [ -- ] for numeric values,
+ { -- } for strings or character alone,
+ ( -- ) for booleans.
+ The "--" represents the execution. So before it, what it's necessary for the
+ function (used during execution), and after it what the function products.
+ If a stack is not used there is nothing about it. Here, "help" use no stack.
 ls_clear : ( bool1 bool2 ... boolN -- )
  clears the logical stack.
 cs_clear : { str1 ... strn -- }
@@ -649,5 +667,14 @@ i2c_write : [ Value Offset Address I2C-ID -- ]
 i2c_read : [ Offset Address I2C-ID -- Value ]
  read at data-address Offset for chip-address Address of I2C interface I2C-ID.
  If Offset equal -1, the read is done directly at Address.
+dump :
+ dumps all things in Nife. The name of the file must follow this instruction.
+ The contents is not in Nife code, but in Nife Binary Linkable Format (NBLF).
+ This format depends on Scs key and the version of Nife. That's mean that a such
+ file can be used in an environment with same Scs and same Nife version. It does
+ not depend on architecture (Intel, ARM, ...) or processor size (32 or 64 bits).
+restore :
+ restores a dumped file. The name of the file must follow this instruction.
+ See dump for more details.
 
 

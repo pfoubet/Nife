@@ -1,5 +1,22 @@
 History of Nife releases :
 
+2014-06-27 - Nife 0.49 is released.
+	* Add DEC, HEX, OCT and BIN functions to define the print mode for the
+	  integers. The default is decimal.
+	* Modify signals comportment to accept interrupt from terminal to stop
+	  execution in the main (interactive) task.
+	* Fixed an error in the case of the end: label is before the onerr: one.
+	* Fixed a bug when a signal "segmentation violation" is catched.
+	* Add some help facilities suggested by Alain Empain, until his tools
+	  are efficient in Nife.
+	* Beginning the functions dump and restore with definition of the NBLF,
+	  Nife Binary Linkable Format (just for a Request for Comments ;-).
+	* The installation has been tested by Gaetan Angely on three ARM SBCs:
+	  Raspberry Pi, Beaglebone Black, ODROID-U3 with Arch Linux ARM.
+	  All information about Arch Linux ARM at http://archlinuxarm.org/.
+	  He have compared with two Intel processors and have published a
+	  benchmak on the two mailing lists.
+
 2014-05-10 - Nife 0.47 is released.
 	* Beginning an I2C interface for Linux systems, inspired by the Linux
 	  package i2c-tools.

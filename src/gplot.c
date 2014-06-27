@@ -52,13 +52,13 @@ static void *stackGP = VIDE;
 /* file manipulations */
 static void GPF_init(char *f)
 {
-int fd;
-   chdir(".nife");
+int fd, r;
+   r = chdir(".nife");
    if ((fd = creat(f,0600)) != -1) {
       write(fd,"# Nife auto-generated GNUplot file !\n",37);
       close(fd);
    }
-   chdir("..");
+   if (r==0) chdir("..");
 }
 
 static void GPF_del(char *f)

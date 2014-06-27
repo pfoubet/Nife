@@ -22,15 +22,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #define LHLP 200 /* longueur MAX des lignes du fichier hlp */
 static char buf[LHLP];
-void helpStd(char * L)
+
+static void helpShow(char * L)
 {
 FILE * fd;
 int debut=0,l;
-    dropTrSuite();
     if ((fd = fopen("nife.hlp","r")) == NULL) {
 	perror("help file");
         return;
     } else {
+      if (L == NULL) {
+        debut=1;
+        while (fgets(buf,LHLP,fd) != NULL) {
+           if (buf[0] != ' ') break;
+           printf("%s",buf);
+        }
+      } else {
         while (fgets(buf,LHLP,fd) != NULL) {
            if (debut) {
               if (buf[0] != ' ') break;
@@ -43,13 +50,25 @@ int debut=0,l;
            }
            printf("%s",buf);
         }
+      }
     }
     if (debut==0) printf("No help find !\n");
     fclose(fd);
+}
+
+void helpStd(char * L)
+{
+    dropTrSuite();
+    helpShow(L);
 }
 
 
 void IF_help(void)
 {
     putTrSuite(helpStd);
+}
+
+void IF_helpS(void)
+{
+    helpShow(NULL);
 }

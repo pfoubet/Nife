@@ -34,7 +34,7 @@ void D_Reset(void)
 {
 int fd;
 char NF[24];
-   chdir(".nife");
+   chdir(".nife"); 
    if (Debug) {
      sprintf(NF,".nife_%d.log",getpid());
      if ((fd=open(NF,O_CREAT|O_RDWR|O_TRUNC,0644)) < 0) perror(NF);

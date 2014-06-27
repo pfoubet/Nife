@@ -19,5 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #define __NIFE_HELP_H__
 
 extern void IF_help(void);
+extern void IF_helpS(void);
 
 #endif
