@@ -208,54 +208,132 @@ int i=0;
 
 struct DumpEnt {
     double V;
-    char L[4];
-    long Scs;
+    char L[8];
+    uint32_t Scs;
 };
 
 /* Dump and Restore Nblf : Nife Binary Linkable Format */
+#define LENT 20
+#define LMARK 3
+
+char * DumpRest_ext(char * L)
+{
+void * M;
+char *F;
+   if ((M = malloc(strlen(L)+5)) == NULL) stopErr("DumpRest_ext","malloc");
+   F = (char*)M;
+   sprintf(F,"%s.nblf",L);
+   return F;
+}
+
+void dump_marque(int fd, char C)
+{
+char b[LMARK+1];
+   sprintf(b,"<%c>",C);
+   if ((write (fd, (void*)b, LMARK)) != LMARK)
+       stopErr("dump","marque");
+}
+
+void restore_marque(int fd, char C)
+{
+char b[LMARK+1];
+   /* printf("Restore %c ! \n", C); */
+   if ((read(fd, (void*)b, LMARK)) == LMARK)
+       if (b[1] == C) return;
+   stopErr("restore","marque");
+}
+
+void rest_links_pr(int i, char *O, char *C)
+{
+   if (i) {
+      printf("Linking %d %s", i, O);
+      if (i > 1) printf("s");
+      printf(" to %s stack.\n",C);
+   }
+}
+
+void dump_rest_pr(int T, int N, char * L) /* T=0 dump, T=1 restore */
+{
+    if (T==0) printf("Dump ");
+    printf("%d elt",N);
+    if (N>1) printf("s");
+    printf(" for %s stack",L);
+    if (T) printf(" restored");
+    printf(".\n");
+}
 
 static void restoreFic(char *L)
 {
 int fd;
 struct DumpEnt E;
+char * F;
+
     dropTrSuite();
-    if ((fd = open(L,O_RDONLY)) == -1) {
-        perror(L);
+    F = DumpRest_ext(L);
+    if ((fd = open(F,O_RDONLY)) == -1) {
+        perror(F);
         messErr(43);
     } else {
-      if (read(fd,(void*)&E, sizeof(E)) != sizeof(E)) {
+      if (read(fd,(void*)&E, LENT) != LENT) {
         printf("File too small !\n");
         messErr(59);
       } else {
-         if (strncmp(E.L,"Nblf", 4) == 0) {
+         if (strncmp(E.L,"Nblf010", 7) == 0) {
+          if (E.Scs == (long)getScs()) {
             if (E.V == atof(VERSION)) {
+               restore_marque(fd, 'N');
+               restore_stackN(fd);          
+               restore_marque(fd, 'C');
+               restore_stackC(fd);          
+               restore_marque(fd, 'L');
+               restore_stackL(fd);          
+               restore_marque(fd, 'V');
                restore_stackV(fd);          
+               restore_links_stackN();          
+               restore_marque(fd, 'F');
                restore_stackF(fd);          
+               restore_marque(fd, 'X');
+               restore_links_stackV();          
             } else printf("This file is just available for Nife v %g !\n",E.V);
+          } else printf("This file have another SCS !\n");
          } else printf("Not a NBLF File !\n");
          close(fd);
       }
-
     }
+    free((void*)F);
 }
 
 static void dumpFic(char *L)
 {
 int fd;
 struct DumpEnt E;
+char * F;
+
     dropTrSuite();
-    if ((fd = open(L,O_CREAT|O_WRONLY,0600)) == -1) {
-        perror(L);
+    F = DumpRest_ext(L);
+    if ((fd = open(F,O_CREAT|O_WRONLY,0600)) == -1) {
+        perror(F);
         messErr(58);
     } else {
-      strncpy(E.L,"Nblf", 4);
+      strncpy(E.L,"Nblf010", 7);
       E.V=atof(VERSION);
       E.Scs=(long)getScs();
-      write(fd,(void*)&E, sizeof(E));
-      dump_stackV(fd);
-      dump_stackF(fd);
-      close(fd);
+      if ((write(fd,(void*)&E, LENT)) == LENT) {
+         dump_marque(fd, 'N');
+         dump_stackN(fd);
+         dump_marque(fd, 'C');
+         dump_stackC(fd);
+         dump_marque(fd, 'L');
+         dump_stackL(fd);
+         dump_marque(fd, 'V');
+         dump_stackV(fd);
+         dump_marque(fd, 'F');
+         dump_stackF(fd);
+         dump_marque(fd, 'X');
+         close(fd);
+      } else messErr(58);
     }
+    free((void*)F);
 }
 
 static void lectFic(char *L)

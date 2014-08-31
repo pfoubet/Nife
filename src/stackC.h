@@ -35,4 +35,9 @@ extern void IF_dateC(void);
 extern void IF_show_stackC(void);
 extern void IF_debString(void);
 
+extern void dump_eltC(int fd, char*A);
+extern char * restore_eltC(int fd);
+extern void dump_stackC(int fd);
+extern void restore_stackC(int fd);
+
 #endif

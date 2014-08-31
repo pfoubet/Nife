@@ -82,9 +82,11 @@ extern void IF_DO_Next(void);
 extern void IF_DO_Show(void);
 extern void execCode(void *C);
 extern void * fctByName(char *L);
+extern void * fctByInd(long i);
 extern void * fctByCode(void *C);
 extern void execFctV(void * A);
 extern char * fctByAddr(void *A);
+extern long  iFctByAddr(void *A);
 extern char * codByAddr(void *A);
 extern void IF_nDO(void);
 

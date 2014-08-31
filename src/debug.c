@@ -32,9 +32,9 @@ int Debug=1;	/* OK by default */
 
 void D_Reset(void)
 {
-int fd;
+int fd, nc;
 char NF[24];
-   chdir(".nife"); 
+   nc=chdir(".nife"); 
    if (Debug) {
      sprintf(NF,".nife_%d.log",getpid());
      if ((fd=open(NF,O_CREAT|O_RDWR|O_TRUNC,0644)) < 0) perror(NF);
@@ -43,7 +43,7 @@ char NF[24];
       close(fd);
      }
    } else dup2(1,2);
-   chdir("..");
+   nc=chdir("..");
 }
 
 void D_Update(void)

@@ -1,5 +1,15 @@
 History of Nife releases :
 
+2014-08-31 - Nife 0.51 is released.
+	* Finalising the version 1.0 of the functions dump and restore with the
+	  definition of the NBLF, Nife Binary Linkable Format.
+	* Modify some labels to clarify the perception of internal mechanisms.
+	* Some modifications to avoid unnecessary warnings at compilation.
+	* Temporary suspension of some functions related to the dynamic aspect
+	  of the language because, used improperly, it could be dangerous.
+	  These functions will be include again, but with more explanations and
+	  examples.
+
 2014-06-27 - Nife 0.49 is released.
 	* Add DEC, HEX, OCT and BIN functions to define the print mode for the
 	  integers. The default is decimal.

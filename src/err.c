@@ -134,6 +134,7 @@ void stopErr(char *M, char *F)
 
 static void traiteErr(int n, char * L)
 {
+int v;
     ERROR=n;
     if (D_Cod==0) {
        if (ECHOOFF) printf("\n");
@@ -155,7 +156,7 @@ static void traiteErr(int n, char * L)
     if (iTERM) {
       printf("In loading stdin : line %d !\n", getFDlig());
       close(FD_IN);  /* pipe ou autre */
-      dup(iTERM); /* stdin on term */
+      v = dup(iTERM); /* stdin on term */
       iTERM = 0;
     }
 }

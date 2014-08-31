@@ -494,7 +494,6 @@ int s;
       NElt->n = StackN;
       NElt->t = Elt->t & ~MSK_V; /* au cas ou Var */
       _MODIF_STACKN_(M);
-      ;
 }
 
 void IF_dup(void)
@@ -1957,4 +1956,112 @@ void IF_TABMax(void) { TAB_Fct('M'); }
 void IF_TABProd(void) { TAB_Fct('*'); }
 void IF_TABSum(void) { TAB_Fct('+'); }
 void IF_TABMinMax(void) { TAB_Fct('E'); }
+
+#define LENT 20
+void dump_eltN(int fd, void *A, uint32_t MSK)
+{
+struct Num * N;
+long l;
+long long v;
+uint32_t t;
+       N = (struct Num*)A;
+       t = N->t;
+       if ((MSK) && (t & MSK_V)) {
+          v = (long long)iVarByAddrA(A);
+          t = 1 | MSK_V;
+          write(fd, (void*)&t, sizeof(t));
+          write(fd, (void*)&v, sizeof(v));
+       } else {
+          /* t &= ~MSK_V; */
+          write(fd, (void*)&t, sizeof(t));
+          l = t & MSK_T;
+          write(fd, (void*)&(N->l), (size_t)(l*sizeof(double)));
+       }
+}
+
+static int NbARIV;
+void restore_links_stackN(void)
+{
+void **ANext, *A;
+struct Num * N, *T;
+    if (NbARIV == 0) return;
+    ANext = &StackN;
+    while (*ANext != VIDE) {
+       N = (struct Num*) *ANext;
+       if (N->t & MSK_V) {
+          A = varAddrAByInd(N->l);
+          T = (struct Num*) A;
+          T->n = N->n;
+          *ANext = A;
+          free((void*)N);
+       }
+       ANext = &(N->n);
+    }
+    rest_links_pr(NbARIV, "variable", "numerical");
+}
+
+void dump_stackN(int fd)
+{
+void * Next;
+struct Num * N;
+uint32_t n=0;
+int i,j;
+    Next = StackN;
+    while (Next != VIDE) {
+       N = (struct Num*) Next;
+       n++;
+       Next = N->n;
+    }
+    write(fd, (void*)&n, sizeof(n));
+    for (i=n; i>0; i--) {
+        Next = StackN;
+        j=0;
+        while (Next != VIDE) {
+           N = (struct Num*) Next;
+           j++;
+           if (i==j) break;
+           Next = N->n;
+        }
+        dump_eltN(fd, Next, MSK_V);
+    }
+    dump_rest_pr(0,n,"numerical");
+}
+
+static void * restore_eltN_l(int fd, int K)
+{
+uint32_t t, u;
+int s;
+void * M;
+struct Num * N;
+        read(fd, (void*)&t, sizeof(t));
+        u = t & MSK_T;
+        if ((t & MSK_V) && K) NbARIV++;
+        /* printf("%u : %d\n", u, NbARIV); /* debug */
+        s = sizeof(struct Num)+((u-1)*(sizeof(double)));
+        if ((M = malloc(s)) == NULL) stopErr("restore_eltN","malloc");
+        N = (struct Num*)M;
+        N->t = t;
+        N->n = StackN;
+        read(fd, (void*)&(N->l), u*sizeof(double));
+        return M;
+}
+
+void * restore_eltN(int fd)
+{
+    return restore_eltN_l(fd,0);
+}
+
+void restore_stackN(int fd)
+{
+uint32_t n=0, i;
+void * M;
+    NbARIV = 0;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    IF_stack_clear();
+    for (i=0; i<n; i++) {
+        M = restore_eltN_l(fd,1);
+        _MODIF_STACKN_(M);
+    }
+    dump_rest_pr(1,n,"numerical");
+}
 

@@ -109,6 +109,7 @@ int i,n;
 char *C, *E;
 void *A, *W;
 struct Fct *F, *FD;
+   if (AF == VIDE) return;
    F = (struct Fct *)AF;
    /* printf("updDynFct(%s) at 0x%lx\n", F->l, (long)F); */
    if (F->c == VIDE) return;
@@ -227,7 +228,7 @@ char Ctyp;
        printf(" %-25s%c %d octets\n",N->l,Ctyp,*((int*)N->c));
        Next = N->n;
     }
-    printf("<end of function list>\n");
+    printf("<end of functions stack>\n");
 }
 
 static char cod[MAXCODE];
@@ -921,6 +922,36 @@ struct Fct * N;
     return VIDE;
 }
 
+void * codFctByInd(long i)
+{
+void * Next;
+struct Fct * N;
+long j=0;
+    Next = stackF;
+    while (Next != VIDE) {
+       N = (struct Fct*) Next;
+       j++;
+       if (i==j) return (N->c);
+       Next = N->n;
+    }
+    return VIDE;
+}
+
+void * fctByInd(long i)
+{
+void * Next;
+struct Fct * N;
+long j=0;
+    Next = stackF;
+    while (Next != VIDE) {
+       N = (struct Fct*) Next;
+       j++;
+       if (i==j) return Next;
+       Next = N->n;
+    }
+    return VIDE;
+}
+
 void * fctByCode(void * C)
 {
 void * Next;
@@ -1001,6 +1032,36 @@ struct Fct * N;
        Next = N->n;
     }
     return NULL;
+}
+
+long iFctByCode(void * A)
+{
+void * Next;
+struct Fct * N;
+long i=0;
+    Next = stackF;
+    while (Next != VIDE) {
+       i++;
+       N = (struct Fct*) Next;
+       if (N->c==A) return i;
+       Next = N->n;
+    }
+    return 0L;
+}
+
+long iFctByAddr(void * A)
+{
+void * Next;
+struct Fct * N;
+long i=0;
+    Next = stackF;
+    while (Next != VIDE) {
+       i++;
+       N = (struct Fct*) Next;
+       if (Next==A) return i;
+       Next = N->n;
+    }
+    return 0L;
 }
 
 char * codByAddr(void * A)
@@ -1330,13 +1391,74 @@ void IF_debBackC1(void)
     putTrSuite(suiteBackC1);
 }
 
+void dump_code(int fd, char * C)
+{
+void * A;
+uint32_t i;
+     write(fd, C, 1);
+     bcopy((void*)(C+1),(void*)&A,sizeof(A));
+     switch((Code)*C) {
+       case T_ONER :
+       case T_RET :
+       case T_END :
+       case T_JEND :
+       case T_NOP :
+       case T_DO_I :
+       case T_DO_J :
+       case T_DO_K :
+       case T_LOOP :
+       case T_PLOO :
+       case T_EXEK :
+           break; /* nothing */
+       case T_NUM :
+           dump_eltN(fd, A, 0);
+           break;
+       case T_CHA :
+       case T_BKC :
+       case T_BKC1 :
+           dump_eltC(fd, (char*)A);
+           break;
+       case T_LIB :
+           i = iLibByAddr(A);
+           write(fd, (void*)&i, sizeof(i));
+           break;
+       case T_FCT :
+           i = iFctByCode(A);
+           write(fd, (void*)&i, sizeof(i));
+           break;
+       case T_VAR :
+           i = iVarByAddr(A);
+           write(fd, (void*)&i, sizeof(i));
+           break;
+       case T_IF :
+       case T_IFN :
+       case T_DO :
+       case T_IFD :
+       case T_JMP :
+       case T_GOTO :
+           bcopy((void*)(C+1),(void*)&i,sizeof(i));
+           write(fd, (void*)&i, sizeof(i));
+           break;
+/* en principe pas possible !!!
+       case T_FCTP :
+           i = iFctByAddr(A); 
+           write(fd, (void*)&i, sizeof(i));
+           break;
+*********************/
+       default :
+           printf("dump_code : Code %d inconnu !\n",(int)(*C));
+           messErr(58);
+     }
+}
+
 void dump_stackF(int fd)
 {
-long n=0, i, j, v, vi;
+uint32_t n=0, vv;
+long v, vi, i, j, pas, t;
 int *av;
 void *Next, *A;
 struct Fct * N;
-char * C, *F, *D;
+char * C, *F;
     Next = stackF;
     while (Next != VIDE) {
        N = (struct Fct*) Next;
@@ -1344,6 +1466,7 @@ char * C, *F, *D;
        Next = N->n;
     }
     write(fd, (void*)&n, sizeof(n));
+    t = sizeof(A) + 1;
     for (i=n; i>0; i--) {
         Next = stackF;
         j=0;
@@ -1353,35 +1476,139 @@ char * C, *F, *D;
            if (i==j) break;
            Next = N->n;
         }
+        updDynFct(Next,0);
         write(fd, (void*)&(N->typ), sizeof(N->typ));
-        write(fd, (void*)(N->l), strlen(N->l)+1);
+        dump_eltC(fd, N->l);
         A = N->c;
         av = (int*)A;
         vi = (long)*av++; /* i */
-        write(fd, (void*)&v, sizeof(v));
+        vv = vi / t;
+        write(fd, (void*)&vv, sizeof(vv));
         v = (long)*av++; /* ea */
-        write(fd, (void*)&v, sizeof(v));
+        vv = v / t;
+        write(fd, (void*)&vv, sizeof(vv));
         v = (long)*av++; /* Ea */
-        write(fd, (void*)&v, sizeof(v));
+        vv = v / t;
+        write(fd, (void*)&vv, sizeof(vv));
         C = (char*)A+(3*sizeof(int));
-        D = C;
         F = C+vi;
+        pas = sizeof(A) + 1;
+        while (C < F) {
+           dump_code(fd, C);
+           C += pas;
+        }
     }
+    dump_rest_pr(0,n,"user functions");
 }
 
+void restore_links_stackF(void)
+{
+void **ANext, *A;
+   return;
+}
+
+static int NbARIV, NbARIL, NbARIF;
+void restore_code(int fd, char * b, long delta)
+{
+void * A;
+uint32_t i;
+int nc;
+     if ((read(fd, (void*)b, 1)) != 1) return;
+     switch((Code)*b) {
+       case T_NUM :
+           A = restore_eltN(fd);
+           bcopy((void*)(&A),(void*)(b+1),sizeof(A));
+           break;
+       case T_CHA :
+       case T_BKC :
+       case T_BKC1 :
+           A = (void*)restore_eltC(fd);
+           bcopy((void*)(&A),(void*)(b+1),sizeof(A));
+           break;
+       case T_LIB :
+           nc = read(fd, (void*)&i, sizeof(i));
+           A = libByInd(i);
+           bcopy((void*)(&A),(void*)(b+1),sizeof(A));
+           NbARIL++;
+           break;
+       case T_FCT :
+           nc = read(fd, (void*)&i, sizeof(i));
+           A = codFctByInd(i-delta);
+           /* printf("i=%d delta=%d A=%lx\n",i,delta,(long)A); */
+           bcopy((void*)(&A),(void*)(b+1),sizeof(A));
+           NbARIF++;
+           break;
+       case T_VAR :
+           nc = read(fd, (void*)&i, sizeof(i));
+           A = varAddrByInd(i);
+           bcopy((void*)(&A),(void*)(b+1),sizeof(A));
+           NbARIV++;
+           break;
+       case T_IF :
+       case T_IFN :
+       case T_DO :
+       case T_IFD :
+       case T_JMP :
+       case T_GOTO :
+           nc = read(fd, (void*)&i, sizeof(i));
+           bcopy((void*)(&i),(void*)(b+1),sizeof(i));
+           break;
+       default :
+           break;
+     }
+     /* printf("\tCODE=%d i=%d\n", (int)*b, (int)i); */
+}
 
 void restore_stackF(int fd)
 {
-long n=0, i;
+uint32_t n=0, vv;
+long i, vi, v, pas, t;
 short typ;
-char Lib[LDFLT+2], *b;
+char *Lib, *C, *F;
+void * M;
+struct Fct *Elt;
+int *bi, nc;
     if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
-    /* printf("Il y a %ld fonctions !\n",n); */
-    for (i=0; i<n; i++) {
-        read(fd, (void*)&typ, sizeof(typ));
-        b=Lib;
-        while(*b != '\0') read(fd,++b,1);
-        /* printf("Fct %s (%d)\n", Lib+1, typ); */
+    /* suppress all fcts */
+    rmAllFonU();
+    while (stackF != VIDE) {
+      Elt = (struct Fct *)stackF;
+      stackF = Elt->n;
+      eraseFct(Elt);
     }
+    /* printf("Nb fct : %d\n", n); */
+    NbARIV=NbARIF=NbARIL=0;
+    t = sizeof(M) + 1;
+    for (i=0; i<n; i++) {
+        nc = read(fd, (void*)&typ, sizeof(typ));
+        Lib = restore_eltC(fd);
+        initFct(Lib,typ);
+        nc=read(fd, (void*)&vv, sizeof(vv));
+        vi = vv * t;
+        if ((M = malloc((3*sizeof(int))+vi)) == NULL)
+                                       stopErr("restore_stackF","malloc");
+        bi = (int*)M;
+        *bi++ = (int)vi;
+        nc=read(fd, (void*)&vv, sizeof(vv));
+        v = vv * t;
+        *bi++ = (int)v;
+        /* printf("Nom=<%s> type=%d vi=%d v1=%d", Lib, typ, (int)vi, (int)v); */
+        nc=read(fd, (void*)&vv, sizeof(vv));
+        v = vv * t;
+        *bi = (int)v;
+        /* printf(" v2=%d\n", (int)v); */
+        C = (char*)M+(3*sizeof(int));
+        F = C+vi;
+        pas = sizeof(M) + 1;
+        putCodeFct(M);
+        while (C < F) {
+           restore_code(fd, C, n-(i+1));
+           C += pas;
+        }
+    }
+    dump_rest_pr(1,n,"user functions");
+    rest_links_pr(NbARIV, "variable", "user functions");
+    rest_links_pr(NbARIL, "library function", "user functions");
+    rest_links_pr(NbARIF, "user function", "user functions");
 }
 

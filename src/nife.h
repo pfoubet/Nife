@@ -42,5 +42,9 @@ extern void putTrSuite(PFC);
 extern void dropTrSuite(void);
 extern void compileFile(char *);
 extern PFC getTrSuite(void);
+extern void dump_marque(int fd, char C);
+extern void restore_marque(int fd, char C);
+extern void dump_rest_pr(int T, int N, char * L);
+extern void rest_links_pr(int i, char *O, char *C);
 
 #endif

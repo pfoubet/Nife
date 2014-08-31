@@ -24,10 +24,13 @@ extern int InstallOn;
 extern void initLib(void);
 extern int execLibNrpc(char * C);
 extern int execLib(char * C);
+extern void * libByInd(long i);
 extern char * libByAddr(void *A);
+extern long  iLibByAddr(void *A);
 extern void listLibBegin(char *b);
 extern char * getLibBegin(char *b);
 extern int nbLibBegin(char *b, char **rac);
 extern void addFonU(char *l, void *A);
+extern void rmAllFonU(void);
 
 #endif

@@ -38,6 +38,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #define VT_N	3 /* NUMBER */
 #define VT_L	4 /* LIB FUNCTION */
 #define VT_F	5 /* USER FUNCTION */
+#define VT_XF	15 /* USER FUNCTION NOT IDENTIFIED during restore */
 
 #define VT_V	9 /* VARIABLE (for "install_v ... in" only) */
 
@@ -73,18 +74,24 @@ struct Var *vS, *vD;
        vD->a = duplicateNum(vS->a, 0);
 }
 
-void initVar(char *Lib)
+void initVarSL(char *L)
 {
-void * M, *L;
+void * M;
 struct Var * N;
-   if ((M = malloc(sizeof(struct Var))) == NULL) stopErr("initVar","malloc");
-   if ((L = malloc(strlen(Lib)+1)) == NULL) stopErr("initVar","malloc");
-   strcpy((char*)L,Lib);
+   if ((M = malloc(sizeof(struct Var))) == NULL) stopErr("initVarSL","malloc");
    N = (struct Var*)M;
-   N->l = (char*)L;
+   N->l = L;
    N->n = stackV;
    N->t = VT_I;
    stackV = M;
+}
+
+void initVar(char *Lib)
+{
+void *L;
+   if ((L = malloc(strlen(Lib)+1)) == NULL) stopErr("initVar","malloc");
+   strcpy((char*)L,Lib);
+   initVarSL((char*)L);
 }
 
 static void setCodeVar(struct Var * Elt, short t, void* A)
@@ -147,49 +154,13 @@ struct Var * N;
           case VT_F :
             printf("User Fct. %s", fctByAddr(N->a));
             break;
+          default :
+            printf("Undefined (%d) !??", N->t);
        }
        printf("\n");
        Next = N->n;
     }
-    printf("<end of variable list>\n");
-}
-
-void dump_stackV(int fd)
-{
-void * Next, *A;
-char * noms, *pn;
-struct Var * N;
-long n, l, i;
-    n=l=0;
-    Next = stackV;
-    while (Next != VIDE) {
-       N = (struct Var*) Next;
-       n++;
-       l += (strlen(N->l)+1);
-       Next = N->n;
-    }
-    l++;
-    write(fd, (void*)&n, sizeof(n));
-    if (n>0) {
-        if ((A = malloc(l)) == NULL) stopErr("dump_stackV","malloc");
-        noms = (char*)A;
-        pn = noms;
-        Next = stackV;
-        while (Next != VIDE) {
-           N = (struct Var*) Next;
-           strcpy(pn,N->l);
-           pn += (strlen(N->l)+1);
-           Next = N->n;
-        }
-        /* on remonte la liste */
-        while (pn > noms) {
-           pn -= 2;
-           while (*pn != '\0') pn--;
-           pn++;
-           write (fd,pn,strlen(pn)+1);
-        } 
-        free(A);
-    }
+    printf("<end of variables stack>\n");
 }
 
 static void newVar(char * S)
@@ -199,19 +170,6 @@ char Lib[LDFLT+1];
     Lib[LDFLT]='\0';
     initVar(Lib);
     dropTrSuite();
-}
-
-void restore_stackV(int fd)
-{
-long n=0, i;
-char Lib[LDFLT+2], *b;
-    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
-    *Lib=' ';
-    for (i=0; i<n; i++) {
-        b=Lib;
-        while(*b != '\0') read(fd,++b,1);
-        initVar(Lib+1);
-    }
 }
 
 void IF_debVar(void)
@@ -262,6 +220,66 @@ struct Var * N;
     while (Next != VIDE) {
        N = (struct Var*) Next;
        if (N->a==A) return(N->l);
+       Next = N->n;
+    }
+    return NULL;
+}
+
+long iVarByAddr(void * A)
+{
+void * Next;
+struct Var * N;
+long i=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       i++;
+       if (Next==A) return(i);
+       N = (struct Var*) Next;
+       Next = N->n;
+    }
+    return 0L;
+}
+
+long iVarByAddrA(void * A)
+{
+void * Next;
+struct Var * N;
+long i=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       i++;
+       N = (struct Var*) Next;
+       if (N->a==A) return(i);
+       Next = N->n;
+    }
+    return 0L;
+}
+
+void * varAddrByInd(long i)
+{
+void * Next;
+struct Var * N;
+long j=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       j++;
+       if (i==j) return(Next);
+       N = (struct Var*) Next;
+       Next = N->n;
+    }
+    return NULL;
+}
+
+void * varAddrAByInd(long i)
+{
+void * Next;
+struct Var * N;
+long j=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       j++;
+       N = (struct Var*) Next;
+       if (i==j) return(N->a);
        Next = N->n;
     }
     return NULL;
@@ -438,5 +456,149 @@ struct Var * N;
        Next = N->n;
     }
     return 0;
+}
+
+void dump_eltV(int fd, void *A)
+{
+struct Var * N;
+uint32_t a;
+int nc;
+       N = (struct Var*)A;
+       nc = write(fd, (void*)&(N->t), sizeof(N->t));
+       dump_eltC(fd, N->l);
+       switch(N->t) {
+          case VT_I :
+            break;
+          case VT_B :
+            nc = write(fd, (void*)&(N->b), sizeof(N->b));
+            break;
+          case VT_C :
+            dump_eltC(fd, (char*)N->a);
+            break;
+          case VT_N :
+            dump_eltN(fd, N->a, 0);
+            break;
+          case VT_L :
+            a = iLibByAddr(N->a);
+            nc = write(fd, (void*)&a, sizeof(a));
+            break;
+          case VT_F :
+            a = iFctByAddr(N->a);
+            nc = write(fd, (void*)&a, sizeof(a));
+            break;
+          default :
+              printf("Var type %d !?\n", N->t);
+            break;
+       }
+}
+
+void dump_stackV(int fd)
+{
+void * Next, *A;
+struct Var * N;
+uint32_t n=0;
+long l, i, j;
+int nc;
+    Next = stackV;
+    while (Next != VIDE) {
+       N = (struct Var*) Next;
+       n++;
+       Next = N->n;
+    }
+    nc = write(fd, (void*)&n, sizeof(n));
+    for (i=n; i>0; i--) {
+        Next = stackV;
+        j=0;
+        while (Next != VIDE) {
+           N = (struct Var*) Next;
+           j++;
+           if (i==j) break;
+           Next = N->n;
+        }
+        dump_eltV(fd, Next);
+    }
+    dump_rest_pr(0,n,"variables");
+}
+
+void restore_links_stackV(void)
+{
+void * Next;
+struct Var * N;
+long i, j=0;
+    Next = stackV;
+    while (Next != VIDE) {
+       N = (struct Var*) Next;
+       if (N->t == VT_XF) {
+            i = (long)(N->a);
+            N->a = fctByInd(i);
+            N->t = VT_F;
+            j++;
+       }
+       Next = N->n;
+    }
+    rest_links_pr(j, "user function", "variables");
+}
+
+static int NbARIL;
+void restore_eltV(int fd)
+{
+struct Var * N;
+short t;
+char *L;
+void *A;
+bool b;
+uint32_t i;
+long Vi;
+int nc;
+    if (read(fd, (void*)&t, sizeof(t)) != sizeof(t)) return;
+    L = restore_eltC(fd);
+    initVarSL(L);
+    /* printf("Var %s %d\n", L, t); */
+    N = (struct Var *)stackV;
+    switch(t) {
+          case VT_I :
+            A = VIDE;
+            break;
+          case VT_B :
+            A = VIDE;
+            nc = read(fd, (void*)&b, sizeof(b));
+            break;
+          case VT_C :
+            A = (void*) restore_eltC(fd);
+            break;
+          case VT_N :
+            A = restore_eltN(fd);
+            break;
+          case VT_L :
+            nc = read(fd, (void*)&i, sizeof(i));
+            A = libByInd(i);
+            NbARIL++;
+            break;
+          case VT_F :
+            nc = read(fd, (void*)&i, sizeof(i));
+            /* A = fctByInd(i); not possible ! */
+            Vi = (long)i;
+            A = (void*)Vi;
+            t = VT_XF;
+            break;
+          default :
+            printf("Var type %d !?\n", N->t);
+            break;
+    }
+    setCodeVar(N, t, A);
+    if (t == VT_B) N->b = b;
+}
+
+void restore_stackV(int fd)
+{
+uint32_t n=0, i;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    NbARIL=0;
+    while (stackV != VIDE) rmVar(&stackV, (struct Var *)stackV);
+    for (i=0; i<n; i++) {
+        restore_eltV(fd);
+    }
+    dump_rest_pr(1,n,"variables");
+    rest_links_pr(NbARIL, "library function", "variables");
 }
 

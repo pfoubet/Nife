@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #ifdef HAVE_CONFIG_H
 #include "../config.h"
 #else
-#define VERSION "0.47"
+#define VERSION "0.51"
 #endif
 
 #ifdef HAVE_COMEDILIB_H

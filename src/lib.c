@@ -83,6 +83,12 @@ char *LMax;
     pLibs += strlen(l);
     *pLibs++ = '\0';
 }
+
+void rmAllFonU(void)
+{
+   while (Fonctions[NBFonc-1].fam == F_USR) NBFonc--;
+}
+
 static void addFonc(char *l, void (*f)(void))
 {
     addFoncT(l,f,0,F_CORE);
@@ -351,9 +357,11 @@ void initLib(void)
     addFonP("install",IF_INSTALL);
     addFonP("install_f",IF_INSTALLF);
     addFonP("install_v",IF_INSTALLV);
+/* pas pour le moment !!
     addFonP("df_init",IF_DF_INIT);
     addFonP("df_start",IF_DF_START);
     addFonP("df_stop",IF_DF_STOP);
+****************/
     addFonc("?ls",IF_show_stackL);
     addFonc("?s",IF_show_stack);
     /* addFonc("?libX",show_lib_addr); for debugging */
@@ -544,6 +552,10 @@ int i;
     }
     return VIDE;
 }
+void * libByInd(long i)
+{
+    return((void*)Fonctions[i].fct);
+}
 
 int execLibNrpc(char *C)
 {
@@ -664,5 +676,16 @@ int i;
         if (f == (PFC)(Fonctions[i].fct)) return Fonctions[i].nam;
     }
     return NULL;
+}
+
+long iLibByAddr(void *A)
+{
+PFC f;
+int i;
+    f = (PFC)A;
+    for (i=0;i<NBFonc;i++) {
+        if (f == (PFC)(Fonctions[i].fct)) return (long)i;
+    }
+    return 0L;
 }
 

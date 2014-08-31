@@ -37,4 +37,8 @@ extern void IF_true(void);
 extern void IF_false(void);
 extern void IF_show_stackL(void);
 
+extern void dump_stackL(int fd);
+extern void restore_stackL(int fd);
+
+
 #endif

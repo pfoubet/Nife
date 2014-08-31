@@ -178,3 +178,24 @@ char s;
     } else printf("<end of logical stack>\n");
 }
 
+
+void dump_stackL(int fd)
+{
+uint32_t n;
+    n = i_StackL;
+    write(fd, (void*)&n, sizeof(n));
+    if (n) write(fd, (void*)stackL, n);
+    dump_rest_pr(0,n,"logical");
+}
+
+void restore_stackL(int fd)
+{
+uint32_t n=0;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    IF_stackL_clear();
+    if (n) {
+        read(fd, (void*)stackL, n);
+        _MODIF_i_StackL_(n);
+    }
+    dump_rest_pr(1,n,"logical");
+}

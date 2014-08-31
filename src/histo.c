@@ -157,6 +157,7 @@ int iTERM=0;
 
 void termInit(void)
 {
+int nc;
     for (iTERM=0; iTERM<3; iTERM++) {
        if (tcgetattr(iTERM, &t0) != -1)  break;
        if (iTERM<2) continue;
@@ -174,7 +175,7 @@ void termInit(void)
     t1.c_cflag |= CS8;
     if (tcsetattr(iTERM, TCSAFLUSH, &t1) == -1) perror("tcsetattr"); /* raw */
     /* clear screen */
-    system("clear");
+    nc=system("clear");
 }
 
 void termReset(void)
@@ -204,7 +205,7 @@ int lireLigne(int fd, char *b, char *s, int nc)
    nc = nb de caracteres possible (longueur du buffer */
 {
 char *d, *f, c, c2, c3, *h, *w, *Wl, *rac;
-int n, i, l, ls=0, ins=0, ignTild=0, nbT=0;
+int n, i, l, ls=0, ins=0, ignTild=0, nbT=0, Nc;
 unsigned int j;
    /* printf("lireLigne ... \n"); */
    d = b;
@@ -330,8 +331,8 @@ unsigned int j;
          /* gestion des caracteres speciaux */
             case '\033':   /* ESCAPE */
               ignTild=1;
-              read(fd,&c2,1);
-              read(fd,&c3,1);
+              Nc=read(fd,&c2,1);
+              Nc=read(fd,&c3,1);
               if (c2 == '[') {
                   switch(c3) {
                       case '2' : /* Insert */
@@ -441,7 +442,7 @@ finBoucle:
    }
    if ((n<1) && iTERM) {
       close(FD_IN);  /* pipe ou autre */
-      dup(iTERM); /* stdin on term */
+      Nc=dup(iTERM); /* stdin on term */
       iTERM = 0;
       if (ECHOOFF) printf("\n");
       return 0;

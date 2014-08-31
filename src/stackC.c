@@ -241,3 +241,43 @@ void IF_debString(void)
     _MODIF_stringEnCours_(1);
 }
 
+void dump_eltC(int fd, char *A)
+{
+uint32_t l;
+      l=strlen(A);
+      write(fd, (void*)&l, sizeof(l));
+      write(fd, A, l+1);
+}
+
+void dump_stackC(int fd)
+{
+uint32_t n, i, l;
+    n = i_StackC;
+    write(fd, (void*)&n, sizeof(n));
+    for (i=0; i<n; i++) dump_eltC(fd, stackC[i]);
+    dump_rest_pr(0,n,"character");
+}
+
+char * restore_eltC(int fd)
+{
+uint32_t l;
+void * M;
+    read(fd, (void*)&l, sizeof(l));
+    if ((M = malloc(l+1)) == NULL) stopErr("restore_eltC","malloc");
+    read(fd, M, l+1);
+    return (char*)M;
+}
+
+void restore_stackC(int fd)
+{
+uint32_t n=0, i, j;
+    if (read(fd, (void*)&n, sizeof(n)) != sizeof(n)) return;
+    IF_stackC_clear();
+    for (i=0; i<n; i++) {
+        j = i_StackC;
+        stackC[j++] = restore_eltC(fd);
+        _MODIF_i_StackC_(j);
+    }
+    dump_rest_pr(1,n,"character");
+}
+
