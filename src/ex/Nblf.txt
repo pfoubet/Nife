@@ -1,0 +1,28 @@
+Description du format NBLF (Nife Binary Linkable Format).
+
+1°) Ce format permet de rassembler dans un seul fichier tous les éléments d'une
+session Nife :
+- les 3 piles des données (numérique, booleens et caracteres),
+- la pile des variables,
+- la pile des fonctions,
+- les liens qui peuvent exister entre ces différents ensembles,
+- les liens qui peuvent exister entre ces ensembles et la librairie de base du
+  système.
+
+2°) La librairie de base pouvant évoluer, le format NBLF dépend donc de la
+ version de Nife, mais également du format des données c'est-à-dire du SCS Key.
+
+3°) Il est indépendant de la plateforme (Intel, ARM, ...) et donc également de
+ la taille du processeur (32 ou 64 bits).
+
+4°) La commande dump permet de sauvegarder dans un fichier l'état du système
+ au moment du dump.
+
+5°) La commande restore permet de restaurer la situation sauvegardée dans le
+ fichier .nblf par la commande dump.
+ ATTENTION : Cette restauration implique une perte des éléments existants au
+ moment du restore !!
+
+Le 31/08/2014 : version 1.0.
+pf
+
