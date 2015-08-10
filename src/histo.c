@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -78,6 +78,11 @@ void closeFD(void)
    iFD--;
    if (iFD) _MODIF_FD_IN_(FD_T[iFD]);
    else _MODIF_FD_IN_(0);
+}
+
+int getiFD(void)
+{
+    return iFD;
 }
 
 int getFDlig(void)
@@ -207,6 +212,7 @@ int lireLigne(int fd, char *b, char *s, int nc)
 char *d, *f, c, c2, c3, *h, *w, *Wl, *rac;
 int n, i, l, ls=0, ins=0, ignTild=0, nbT=0, Nc;
 unsigned int j;
+char bufd[50];
    /* printf("lireLigne ... \n"); */
    d = b;
    f = b+nc;
@@ -333,7 +339,7 @@ unsigned int j;
               ignTild=1;
               Nc=read(fd,&c2,1);
               Nc=read(fd,&c3,1);
-              if (c2 == '[') {
+              if (c2 == '[') { /* CSI - see XTerm Control Sequences */
                   switch(c3) {
                       case '2' : /* Insert */
                         if (ins) {
@@ -350,8 +356,8 @@ unsigned int j;
                            fflush(stdout);
                         }
                         break; 
-                      case 'A' :
-                      case 'B' :
+                      case 'A' : /* UpArrow */
+                      case 'B' : /* DownArrow */
                         ins = 0;
                         /* efface la ligne en cours */
                         l=d-b;
@@ -395,14 +401,24 @@ unsigned int j;
                            fflush(stdout);
                         }
                         break; 
+                      case 'H' : /* home : debug terms ON */
+                      case '1' : /* home numeric */
+                        IFD_DebugTOn();
+                        break; 
+                      case 'F' : /* end : debug terms OFF */
+                      case '4' : /* end numeric */
+                        IFD_DebugTOff();
+                        break; 
                       default:
-                        printf("\nESC [ %d (%c) !\n",(int)c3, c3);
+                        sprintf(bufd,"# ignore : ESC [ %d (%c) !",(int)c3, c3);
+                        D_Tracenl(bufd);
                         *d='\0';
+                        /* **************
                         printf("> %s",b);
-                        fflush(stdout);
+                        fflush(stdout); */
                   }
               } else {
-                 if (c2 == 'O') {
+                 if (c2 == 'O') { /* SS3 - see XTerm Control Sequences */
                     switch(c3) {
                       case 'P' : /* F1 */
                       break; 
@@ -412,12 +428,20 @@ unsigned int j;
                       break; 
                       case 'S' : /* F4 */
                       break; 
+                      case 'H' : /* home : debug terms ON */
+                        IFD_DebugTOn();
+                        break; 
+                      case 'F' : /* end : debug terms OFF */
+                        IFD_DebugTOff();
+                        break; 
                     }
                  } else {
-                  printf("\nESC %d %d (%c) !\n",(int)c2,(int)c3, c3);
+                  sprintf(bufd,"# ignore : ESC %d %d (%c) !",(int)c2,(int)c3, c3);
+                  D_Tracenl(bufd);
                   *d='\0';
+                  /* **************
                   printf("> %s",b);
-                  fflush(stdout);
+                  fflush(stdout); */
                  }
               }
               break; 

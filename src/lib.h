@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,6 +24,8 @@ extern int InstallOn;
 extern void initLib(void);
 extern int execLibNrpc(char * C);
 extern int execLib(char * C);
+extern int fctExists(char *);
+extern void * libByName(char *);
 extern void * libByInd(long i);
 extern char * libByAddr(void *A);
 extern long  iLibByAddr(void *A);

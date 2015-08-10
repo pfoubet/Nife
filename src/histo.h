@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ extern int iTERM;
 extern void IF_showFD(void);
 extern void addFD(int fd, char *N);
 extern void closeFD(void);
+extern int getiFD(void);
 extern int getFDlig(void);
 extern char * getFDname(void);
 extern int lireLigne(int fd, char * buf, char * buf2, int max);

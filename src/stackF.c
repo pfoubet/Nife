@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,6 +24,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "nife.h"
 #include "mth.h"
 #include "err.h"
+#include "debug.h"
 #include "lib.h"
 #include "stackF.h"
 #include "stackN.h"
@@ -216,6 +217,39 @@ struct Fct *Elt;
    return Elt;
 }
 
+void replaceFctS(void)
+{
+void * Next, * Next2;
+struct Fct *Elt, *N, *N2;
+   if (stackF != VIDE) {
+      Elt = (struct Fct *)stackF;
+      if (Elt->n == VIDE) return;
+      Next = Elt->n;
+      N = (struct Fct*) Next;
+      if (N->typ) return;
+      stackF = Elt->n;
+      Elt->n = VIDE;
+      while (Next != VIDE) {
+         N = (struct Fct*) Next;
+         Next2 = N->n;
+         if (Next2==VIDE) {
+            N->n = (void*)Elt;
+            return;
+         } else {
+            N2 = (struct Fct*) Next2;
+            if (N2->typ) {
+               Elt->n = Next2;
+               N->n = (void*)Elt;
+               return;
+            }
+         }
+         Next = N->n;
+      }
+   }
+   else messErr(7);
+   return;
+}
+
 void IF_show_stackF(void)
 {
 void * Next;
@@ -229,6 +263,13 @@ char Ctyp;
        Next = N->n;
     }
     printf("<end of functions stack>\n");
+}
+
+void IFD_show_stackF(void)
+{
+    _IFD_BEGIN_
+    IF_show_stackF();
+    _IFD_END_
 }
 
 static char cod[MAXCODE];
@@ -313,6 +354,7 @@ int i,l, *ea, *Ea;
    if (F->typ) {
       F->typ=2;
       addFonU(F->l,M);
+      replaceFctS();
    }
    /* printf("Total Fct : %d + %d !\n",i_cod,(3*sizeof(int))); */
    _MODIF_fctEnCours_(0);
@@ -477,10 +519,12 @@ char Lib[LDFLT+1];
     i_adB = 0;
     i_adD = 0;
 }
+
 static void newFct0(char * S)
 {
     newFct2(S,0);
 }
+
 static void newFct1(char * S)
 {
     newFct2(S,1);
@@ -564,6 +608,9 @@ struct Fct * FR;
              C = D+ea;
           }  else {
              printf("Called in %s err=%d i=%d/%d cod=<%x>\n",
+                    codByAddr(A),noErr(),(int)(C-D),i,*C);
+             if (InDebugFct==0) fprintf(stderr,
+                    "Called in %s err=%d i=%d/%d cod=<%x>\n",
                     codByAddr(A),noErr(),(int)(C-D),i,*C);
              break; /* end of while */
           }
@@ -1293,10 +1340,12 @@ void IF_delFct(void)
 {
    putTrSuite(rmFct);
 }
+
 void IF_delAFct(void)
 {
    putTrSuite(rmAFct);
 }
+
 void IF_delOFct(void)
 {
    putTrSuite(rmOFct);

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -87,6 +87,13 @@ char * L;
         }
     }
     printf("\nNBTAB=%d\nNBLIG=%d\n",NBTAB,NBLIG);
+}
+
+void IFD_vars(void)
+{
+    _IFD_BEGIN_
+    IF_vars();
+    _IFD_END_
 }
 
 void IF_REAL(void) { _MODIF_DOUBLE_(1); }
@@ -450,6 +457,13 @@ char s;
        else s = 's';
        printf(" ... and %ld other%c element%c !\n",i-Nbl,s,s);
     }
+}
+
+void IFD_show_stack(void)
+{
+    _IFD_BEGIN_
+    IF_show_stack();
+    _IFD_END_
 }
 
 void IF_point(void)

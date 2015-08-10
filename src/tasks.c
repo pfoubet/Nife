@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,6 +18,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <time.h>
 #include <signal.h>
@@ -31,6 +32,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "nife.h"
 #include "mth.h"
 #include "err.h"
+#include "debug.h"
 #include "tasks.h"
 #include "foncs.h"
 #include "histo.h"
@@ -64,15 +66,18 @@ static char * FicCons(int t)
 
 int MakeTask (void * A)
 {
-int i, pid;
-char * NF;
+int i, n, pid;
+char * NF, buf[50];
       i = FctInTask-1;
       if ((pid = fork()) == -1) stopErr("IF_NewTask","fork");
       if (pid == 0) { /* fils */
-         ITASK=FctInTask;  /* TASK 0 is the interractive */
+         ITASK=FctInTask;  /* TASK 0 is the interractive one */
          NF = FicCons(ITASK);
+         n = i+1;
          if ((i=open(NF,O_CREAT|O_RDWR|O_TRUNC,0600)) < 0) perror(NF);
          else {
+            sprintf(buf,"Task #%d console :\n",n);
+            write(i,buf,strlen(buf));
             dup2(i,1);
             dup2(i,2);
             close(i);
@@ -99,6 +104,13 @@ int i;
       }
    }
    printf("<end of tasks list>\n");
+}
+
+void IFD_show_Tasks(void)
+{
+    _IFD_BEGIN_
+    IF_show_Tasks();
+    _IFD_END_
 }
 
 void IF_statusTask(void)
@@ -148,7 +160,7 @@ int i;
    }
 }
 
-void IF_showCons( void)
+void IF_showCons(void)
 {
 long V;
 int i;
@@ -164,4 +176,10 @@ char * NF, comm[30];
    }
 }
 
+void IFD_showCons(void)
+{
+    _IFD_BEGIN_
+    IF_showCons();
+    _IFD_END_
+}
 

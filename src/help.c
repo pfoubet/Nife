@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,6 +19,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include "help.h"
 #include "nife.h"
+#include "lib.h"
+#include "mth.h"
 
 #define LHLP 200 /* longueur MAX des lignes du fichier hlp */
 static char buf[LHLP];
@@ -59,6 +61,15 @@ int debut=0,l;
 void helpStd(char * L)
 {
     dropTrSuite();
+    if (fctExists(L)==0) {
+       printf("%s is not a User System function !\n",L);
+       return;
+    }
+    if (*L == '_') {
+      printf("%s :\n",L);
+      printf("The same as '%s', but with all displays in the log file.\n", L+1);
+      L++;
+    }
     helpShow(L);
 }
 

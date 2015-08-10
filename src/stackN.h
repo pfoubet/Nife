@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ extern void printNumber(void * N);
 extern void numVarOff(void * N);
 extern void * duplicateNum(void * S, int vSoff);
 extern void IF_show_stack(void);
+extern void IFD_show_stack(void);
 extern void IF_ramp(void);
 extern void IF_dramp(void);
 extern void IF_DEC(void);
@@ -53,6 +54,7 @@ extern void IF_VAROFF(void);
 extern void IF_VARUP(void);
 extern void IF_VARDOWN(void);
 extern void IF_vars(void);
+extern void IFD_vars(void);
 extern void IF_point(void);
 extern void IF_swap(void);
 extern void IF_dup(void);

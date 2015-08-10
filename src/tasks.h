@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,10 +22,12 @@ extern int ITASK;
 
 extern void IF_NewTask(void);
 extern void IF_show_Tasks(void);
+extern void IFD_show_Tasks(void);
 extern void IF_statusTask(void);
 extern void IF_stopTask(void);
 extern void IF_delTask(void);
 extern void IF_showCons(void);
+extern void IFD_showCons(void);
 
 extern int MakeTask(void * A);
 

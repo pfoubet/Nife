@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,7 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #define __NIFE_I2C_H__
 
 extern void IF_listI2C (void);
+extern void IFD_listI2C (void);
 extern void IF_showI2C (void);
+extern void IFD_showI2C (void);
 extern void IF_I2CRead (void);
 extern void IF_I2CWrite (void);
 

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -237,6 +237,7 @@ unsigned long funcs;
 #include "stackN.h"
 #include "i2c.h"
 #include "err.h"
+#include "debug.h"
 
 void IF_listI2C (void)
 {
@@ -245,6 +246,13 @@ void IF_listI2C (void)
 #else
     messErr(49);
 #endif
+}
+
+void IFD_listI2C (void)
+{
+    _IFD_BEGIN_
+    IF_listI2C();
+    _IFD_END_
 }
 
 void IF_showI2C (void)
@@ -273,6 +281,13 @@ char Bus[10], filename[20];
 #else
      messErr(49);
 #endif
+}
+
+void IFD_showI2C (void)
+{
+    _IFD_BEGIN_
+    IF_showI2C();
+    _IFD_END_
 }
 
 static void i2c_read(int id, int add, int off)

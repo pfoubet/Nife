@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -33,6 +33,7 @@ extern void IF_typeC(void);
 extern void IF_timeC(void);
 extern void IF_dateC(void);
 extern void IF_show_stackC(void);
+extern void IFD_show_stackC(void);
 extern void IF_debString(void);
 
 extern void dump_eltC(int fd, char*A);

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -447,10 +447,11 @@ uint32_t k;
 char *sF, nF[30];
    i=readMess(s);
    NET_BUF[i]='\0';
-   /* D_Trace(NET_BUF); */
+   D_TraceH(NET_BUF,i); /* to debug */
    switch(*NET_BUF) {
      case NET_OFF :
        send1car(s, NET_OFF+1);
+       D_Close();
        exit(0); /* stop the Nrpc client */
        break;
      case NET_EXE :
@@ -498,7 +499,7 @@ char c, *sN, *sF;
 
    i=readMess(s);
    NET_BUF[i]='\0';
-   /* D_Trace(NET_BUF); */
+   D_TraceH(NET_BUF,i); /* for debug */
    switch(*NET_BUF) {
      case NET_ONR :
        CalDT=1;
@@ -536,7 +537,10 @@ char c, *sN, *sF;
        delCli(M1.pid, Sin.sin_addr);
        send1car(s, NET_OFF+1);
        if (STS) {
-          if (NCli == 0) exit(0); /* stop the server */
+          if (NCli == 0) {
+             D_Close();
+             exit(0); /* stop the server */
+          }
           STS=0;
        }
        break;
@@ -683,13 +687,19 @@ static int connSock(void)
    return 0; /* OK */
 }
 
+static void InterruptRpc(int S)
+{
+   D_Close();
+   exit(0);
+}
+
 void main_Nrpc(void) /* main function for Nrpc client */ 
 {
 int sock, nsock;
 socklen_t ln;
 struct sockaddr_in Nsin;
 
-    signal(SIGTERM, SIG_DFL);
+    signal(SIGTERM, InterruptRpc);
     if ((sock = socket(AF_INET, SOCK_STREAM,  IPPROTO_TCP)) < 0)
        stopServ(0, "socket",1); 
     bzero(&Nsin,sizeof(Nsin));
@@ -725,6 +735,7 @@ static void startNrpc(void)
        close(0);
        close(1);
        /* close(2); */
+       if (Debug) Debug=3;
        D_Reset();
        IF_stack_clear(); /* clear all stacks */
        IF_stackL_clear();
@@ -763,6 +774,7 @@ int pid;
        close(0);
        close(1);
        /* close(2); */
+       if (Debug) Debug=2;
        D_Reset();
        close(Sock);
        IF_stack_clear(); /* clear all stacks */
@@ -933,6 +945,13 @@ void IF_netList (void)
    printf("<end of net list>\n");
 }
 
+void IFD_netList (void)
+{
+    _IFD_BEGIN_
+    IF_netList();
+    _IFD_END_
+}
+
 void IF_netStackList (void)
 {
    if (NET) {
@@ -943,7 +962,13 @@ void IF_netStackList (void)
      readAff(Sock, NET_SLI+1);
      close(Sock);
    } 
-   /* printf("<end of net stack>\n"); */
+}
+
+void IFD_netStackList (void)
+{
+    _IFD_BEGIN_
+    IF_netStackList();
+    _IFD_END_
 }
 
 void IF_netDropS (void)

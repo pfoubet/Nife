@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,6 +30,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "nife.h"
 #include "mth.h"
 #include "err.h"
+#include "debug.h"
 #include "foncs.h"
 #include "histo.h"
 #include "stackN.h"
@@ -91,7 +92,6 @@ char * Sh;
    if ((pid = fork()) == -1) stopErr("runComm","fork");
    if (pid == 0) { /* fils */
       _MODIF_inSonProc_(1);
-      termReset();
       if ((Sh=getenv("SHELL")) == NULL) execlp("sh","sh","-c",com,NULL);
       else execlp(Sh,"sh","-c",com,NULL);
       perror("sh");
@@ -99,8 +99,12 @@ char * Sh;
    }
    waitpid(pid,NULL,0);
    _MODIF_WAITPID_(0);
-   termInit();
-   printf("\n");
+}
+
+void runCommandT (char * com)
+{
+   D_Trace("$"); D_Tracenl(com);
+   runCommand(com);
 }
 
 void IF_toCsv(void)

@@ -1,5 +1,27 @@
 History of Nife releases :
 
+2015-08-10 - Nife 0.55 is released.
+	* Changing the log file contents to be able to use it for debugging.
+	  The log file is in the subdirectory .nife. His name is the type
+	  .nife_PID.log, PID being its number of pid.
+	  We can display the content in real time with tail -f.
+	  The .nifeNS_pid.log and .nifeRPC_PID.log files are those of the
+	  server networks and its bodies.
+	  Log files are deleted at the end of the Nife session unless an error
+	  occured.
+	* Added "savelog function to save the logs before going out.
+	* Placing aid debugging functions. All these functions begin with the _
+	  character and are listed with ?libp function.
+	* Added shell script command, ex/NifeDebugTerms, to facilitate
+	  establishment and closing of the display terminals for the logs.
+	* Added the possibility, in graphic mode, to open or close
+	  terminals with keys 'home' and 'end'. These functionalities are
+	  based on performance in the window manager of the above script.
+	* Reorganization of system functions in the function stack.
+	* Improved tasks and consoles.
+	* Added the ability to execute external command interactively, with the
+	  character ! at the beginning of the line.
+
 2014-08-31 - Nife 0.51 is released.
 	* Finalising the version 1.0 of the functions dump and restore with the
 	  definition of the NBLF, Nife Binary Linkable Format.

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,6 +36,7 @@ extern void IF_xorL(void);
 extern void IF_true(void);
 extern void IF_false(void);
 extern void IF_show_stackL(void);
+extern void IFD_show_stackL(void);
 
 extern void dump_stackL(int fd);
 extern void restore_stackL(int fd);

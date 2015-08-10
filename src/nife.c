@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -112,7 +112,7 @@ char Lib[8];
 #ifdef _MULTI_THREADING_
     strcpy(Lib,"mt-");
 #endif
-    printf("nife (Networking Industrial Forth-like Environment) - version %s%s-%ld/%ld\n\t (c) S.E.R.I.A.N.E. 2009-2014\n",Lib,VERSION,sizeof(long)*8,sizeof(double)*8);
+    printf("nife (Networking Industrial Forth-like Environment) - version %s%s-%ld/%ld\n\t (c) S.E.R.I.A.N.E. 2009-2015\n",Lib,VERSION,sizeof(long)*8,sizeof(double)*8);
 }
 
 int isSepa(char c, int m)
@@ -144,13 +144,32 @@ PFC tS;
     return Err;
 }
 
-static void traiteLigne(char *b)
+static void traiteLigne(char *b, int Ctx)
 {
 char *mot, *d, *f, *w;
+   /* case of sh command : ! */
+   if (*b=='!') {
+     runCommandT(b+1);
+     return;
+   }
    d=b; f=b+strlen(d);
 #ifdef DEBUG
      printf("traiteLigne : <%s>\n",d);
 #endif
+   switch(Ctx) {
+     case 1 : /* compileFile */
+       D_Trace(" #");
+       break;
+     case 2 : /* IF_ExecCS */
+       D_Trace("# ExecCS:");
+       break;
+     case 3 : /* makeFunction */
+       D_Trace("# makeFunction:");
+       break;
+     default : /* 0 */
+       if (getiFD()) D_Trace(" #");
+   }
+   D_Tracenl(b);
    while (d<f) {
        if (noErr()) break;
        /* recherche du 1er mot */
@@ -199,7 +218,7 @@ int i=0;
              printf("In file %s line %d !\n",f,i);
              break;
           }
-          traiteLigne(bufP);
+          traiteLigne(bufP,1);
           i++;
        }
        fclose(F);
@@ -361,7 +380,7 @@ void IF_ExecCS(void)
 char * f;
     f = getString();
     if (f != NULL) {
-       if (strlen(f)>0) traiteLigne(f);
+       if (strlen(f)>0) traiteLigne(f,2);
        free((void*)f);
     }
 }
@@ -371,7 +390,7 @@ void * makeFunction(char * f)
 void *M;
    if ((M = malloc(strlen(f)+8)) == NULL) stopErr("makeFunction","malloc");
    sprintf((char*)M,": _f %s ;",f);
-   traiteLigne((char*)M);
+   traiteLigne((char*)M,3);
    free(M);
    if (noErr() == 0) {
        M = fctByName("_f");
@@ -414,7 +433,7 @@ void IF_Load(void)
 
 int main(int N, char *P[])
 {
-int n;
+int n,Ctx;
 char *dirW = ".nife";
     if (N > 2) {
        fprintf(stderr,"nife [nif-file]\n");
@@ -463,16 +482,18 @@ char *dirW = ".nife";
        if ((FD_IN+iTERM) == 0) {
           printf("> ");
           fflush(stdout);
-       }
+          Ctx=0;
+       } else Ctx=1;
        razErr();
        if ((n=lireLigne(FD_IN,bufP,bufP2,LBUF)) == -1)
                  printf("Line too long!\n");
        else
-          if (n>0) traiteLigne(bufP);
+          if (n>0) traiteLigne(bufP,0);
     }
     IF_delAllGP();
     IF_netStopS();
     IF_netOff();
+    D_Close();
     termReset();
     printf("Bye !\n");
     return 0;

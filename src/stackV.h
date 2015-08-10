@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 extern void IF_debVar(void);
 extern void IF_debVarCS(void);
 extern void IF_show_stackV(void);
+extern void IFD_show_stackV(void);
 extern void IF_delVar(void);
 extern void dump_stackV(int fd);
 extern void restore_stackV(int fd);

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "nife.h"
 #include "mth.h"
 #include "err.h"
+#include "debug.h"
 #include "stackL.h"
 
 
@@ -178,6 +179,12 @@ char s;
     } else printf("<end of logical stack>\n");
 }
 
+void IFD_show_stackL(void)
+{
+    _IFD_BEGIN_
+    IF_show_stackL();
+    _IFD_END_
+}
 
 void dump_stackL(int fd)
 {

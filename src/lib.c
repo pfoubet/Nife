@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -344,9 +344,12 @@ void initLib(void)
     addFonE("del_ofunc",IF_delOFct, F_PROG);
     addFonE("fscan",IF_scanFct, F_PROG);
     addFonc("?cs",IF_show_stackC);
+    addFonP("_?cs",IFD_show_stackC);
     addFonP("?f",IF_show_stackF);
-    /* addFonP("?l",IF_showFD); for debugging */
+    addFonP("_?f",IFD_show_stackF);
+    /* addFonP("?l",IF_showFD); for internal debugging */
     addFonP("?v",IF_show_stackV);
+    addFonP("_?v",IFD_show_stackV);
     addFonE("del_var",IF_delVar,F_PROG);
     addFonP("vdrop",rmLastVar);
     addFonP("reset_var",IF_setVarI);
@@ -363,8 +366,10 @@ void initLib(void)
     addFonP("df_stop",IF_DF_STOP);
 ****************/
     addFonc("?ls",IF_show_stackL);
+    addFonP("_?ls",IFD_show_stackL);
     addFonc("?s",IF_show_stack);
-    /* addFonc("?libX",show_lib_addr); for debugging */
+    addFonP("_?s",IFD_show_stack);
+    /* addFonc("?libX",show_lib_addr); for internal debugging */
     addFonc("?libs",IF_show_liball);
     addFonc("?lib",IF_show_libstd);
     addFonc("?libM",IF_show_libmath);
@@ -387,7 +392,9 @@ void initLib(void)
     addFonc("BIN",IF_BIN);
     addFonc("echo_on",IF_ECHOON);
     addFonc("echo_off",IF_ECHOFF);
-    addFonc("DEBUG_I/O",D_Update);
+    addFonP("DEBUG_I/O",IFD_Update);
+    addFonP("\"saveLog",IFD_SaveLog);
+    /* addFonP("?logs",IFD_DebugTOn); */
     addFonc("NBTAB",IF_NBTAB);
     addFonc("NBLIG",IF_NBLIG);
     addFonE("Var",IF_debVar, F_PROG);
@@ -396,6 +403,7 @@ void initLib(void)
     addFonP("var_up",IF_VARUP);
     addFonP("var_down",IF_VARDOWN);
     addFonc("?vars",IF_vars);
+    addFonP("_?vars",IFD_vars);
     addFonc("drop",IF_drop);
     addFonc("dup",IF_dup);
     addFonc("swap",IF_swap);
@@ -460,6 +468,7 @@ void initLib(void)
     addFonG("xy_xgraph",IF_xyXgraph);
     addFonG("xyt_xgraph",IF_xytXgraph);
     addFonG("?gp",IF_show_stackGP);
+    addFonP("_?gp",IFD_show_stackGP);
     addFonG("gplot",IF_gplot_new);
     addFonG("gplotM",IF_gplot_newM);
     addFonG("gplotRaz",IF_delAllGP);
@@ -472,6 +481,7 @@ void initLib(void)
     addFonP(":!",IF_debFctS);
     addFonP("Task",IF_NewTask);
     addFonP("?t",IF_show_Tasks);
+    addFonP("_?t",IFD_show_Tasks);
     addFonP("?task_run",IF_statusTask);
     addFonP("del_task",IF_delTask);
     addFonP("\"f",IF_execCS);
@@ -480,6 +490,7 @@ void initLib(void)
     addFonP("\"v?",IF_execCSvl);
     addFonP("stop_task",IF_stopTask);
     addFonP("?console",IF_showCons);
+    addFonP("_?console",IFD_showCons);
     addInst(";",IF_finFct);
     addInst("'",IF_debBackC);
     addInst("`",IF_debBackC1);
@@ -496,7 +507,7 @@ void initLib(void)
     addFonc("do_leave",IF_DO_Leave);
     addFonc("*do_leave",IF_DO_MLeave);
     addFonc("do_next",IF_DO_Next);
-    /* addFonc("?do",IF_DO_Show); for debugging */
+    /* addFonc("?do",IF_DO_Show); for internal debugging */
     addFonc("ndo",IF_nDO);
     addInst("loop",IF_LOOP);
     addInst("+loop",IF_PLOOP);
@@ -510,18 +521,24 @@ void initLib(void)
     addInst("goto_end",IF_JEND);
     addFonE("help",IF_help, F_CORE);
     addFonD("?dev",IF_listDev);
+    addFonP("_?dev",IFD_listDev);
     addFonD("dev_info",IF_showDev);
+    addFonP("_dev_info",IFD_showDev);
     addFonD("dev_read",IF_devRead);
     addFonD("dev_write",IF_devWrite);
     addFonD("dev_dflt",IF_devDflt);
     addFonD("?dev_dflt",IF_devShowDflt);
+    addFonP("_?dev_dflt",IFD_devShowDflt);
     addFonD("dev_dflW",IF_devDflW);
     addFonD("dev_dflR",IF_devDflR);
     addFonD("?i2c",IF_listI2C);
+    addFonP("_?i2c",IFD_listI2C);
     addFonD("i2c_info",IF_showI2C);
+    addFonP("_i2c_info",IFD_showI2C);
     addFonD("i2c_read",IF_I2CRead);
     addFonD("i2c_write",IF_I2CWrite);
     addFonN("?n",IF_netList);
+    addFonP("_?n",IFD_netList);
     addFonN("netOn",IF_netOn);
     addFonN("netOff",IF_netOff);
     addFonN("netDt>",IF_netDt);
@@ -535,10 +552,20 @@ void initLib(void)
     addFonN("NetErr",IF_NetErrVal);
     addFonN("Me",IF_Me);
     addFonN("?ns",IF_netStackList);
+    addFonP("_?ns",IFD_netStackList);
     addFonN(">net",IF_netU2S);
     addFonN("net>",IF_netS2U);
     addFonN("ndrop",IF_netDropS);
     /* triList(); */
+}
+
+int fctExists(char * L)
+{
+int i;
+    for (i=0;i<NBFonc;i++) {
+        if (strcmp(L,Fonctions[i].nam) == 0) return 1;
+    }
+    return 0;
 }
 
 void * libByName(char * L)
@@ -552,6 +579,7 @@ int i;
     }
     return VIDE;
 }
+
 void * libByInd(long i)
 {
     return((void*)Fonctions[i].fct);
@@ -588,7 +616,7 @@ int i;
 void * A;
 short T=0;
     InExec = C;
-    D_Trace(C);
+    /* D_Trace(C); pas pour le moment */
     if (sigsetjmp(ENV_INT,1)) {
        interInfos("execLib",C);
        return 1;

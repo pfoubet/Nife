@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "nife.h"
 #include "mth.h"
 #include "err.h"
+#include "debug.h"
 #include "histo.h"
 #include "stackF.h"
 #include "stackN.h"
@@ -132,29 +133,39 @@ void stopErr(char *M, char *F)
     exit(1);
 }
 
+static ErrPrintf(char *M)
+{
+   printf(M);
+   if (InDebugFct==0) fprintf(stderr,M);
+}
+
 static void traiteErr(int n, char * L)
 {
 int v;
     ERROR=n;
     if (D_Cod==0) {
        if (ECHOOFF) printf("\n");
+       /* if (InDebugFct==0) fprintf(stderr,"\n"); A VOIR ! */
        printf("%s : %s !!\a\n",L,TabErr[n]);
+       if (InDebugFct==0) fprintf(stderr,"%s : %s !!\a\n",L,TabErr[n]);
     }
     if (inSonProc) exit(1);
     if (fctEnCours) {
-        if (D_Cod==0) printf("Compilation aborted !\n");
+        if (D_Cod==0) ErrPrintf("Compilation aborted !\n");
         else
-           if (ADDRONE == VIDE) printf("Inside compilation aborted !\n");
+           if (ADDRONE == VIDE) ErrPrintf("Inside compilation aborted !\n");
         _MODIF_fctEnCours_(0);
         rmLastFct();
     }
     if (ADDRONE != VIDE) return;
     if (FD_IN) {
         printf("In loading file %s : line %d !\n", getFDname(),getFDlig());
+        if (InDebugFct==0) fprintf(stderr, "In loading file %s : line %d !\n", getFDname(),getFDlig());
         closeFD();
     }
     if (iTERM) {
       printf("In loading stdin : line %d !\n", getFDlig());
+      if (InDebugFct==0) fprintf(stderr,"In loading stdin : line %d !\n", getFDlig());
       close(FD_IN);  /* pipe ou autre */
       v = dup(iTERM); /* stdin on term */
       iTERM = 0;
@@ -183,8 +194,7 @@ void IF_NoError(void)
 void IF_LibError(void)
 {
 long P;
-   getParLong(&P);
-   putString(TabErr[(int)P]);
+   if (getParLong(&P)) putString(TabErr[(int)P]);
 }
 
 void IF_IsError(void)

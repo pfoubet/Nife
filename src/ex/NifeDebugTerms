@@ -1,0 +1,54 @@
+#! /bin/sh
+# Ce script a ete fait pour l'environnement Gnome,
+# mais il peut etre adapte tres facilement.
+# Pour cela suivre les commentaires.
+
+explic ()
+{
+   echo "Erreur : $1 !" >&2
+   echo "Utilisation : $0 [-s|-r]" >&2
+   echo "   option -s=stopper l'affichage des logs" >&2
+   echo "   option -r=relancer l'affichage des logs" >&2
+   exit 1
+}
+
+TERMCOM='gnome-terminal' # mettre ici le nom de la commande qui va bien !
+
+if ! test $TERMCOM ; then
+   echo "Commande $TERMCOM absente !" >&2
+   exit 1
+fi
+
+
+if [ $# -gt 1 ]; then
+   explic "Parametres trop nombreux"
+fi
+Mode=0
+if [ $# -eq 1 ]; then
+   [ "$1" = "-s" ] && Mode=1
+   [ "$1" = "-r" ] && Mode=2
+   [ $Mode -eq 0 ] && explic "$1 : parametre non valable"
+   # arret des terminaux
+   liste=`ps -fe|grep -v 'sh -c'|grep 'tail -f .nife'|sed 's/  */ /g'|cut -d' ' -f2`
+   for pid in $liste
+   do
+     kill $pid 2>/dev/null
+   done
+   [ $Mode -eq 1 ] && exit 0
+fi
+
+IFS='
+'
+liste=`ls .nife/.nife*` 2>/dev/null
+if [ "$liste" = "" ]; then
+   echo "Pas de fichier log ! Nife n'est pas en action !" >&2
+   exit 2
+fi
+
+for l in $liste
+do
+   com="tail -f $l"
+   $TERMCOM -e "sh -c '$com'" -t "$l" # A mettre a jour si TERMCOM 
+                                      #              a ete modifie !!
+done
+

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -31,10 +31,12 @@ extern void IF_netOff(void);
 extern void IF_netDt(void);
 extern void IF_netDepth(void);
 extern void IF_netList(void);
+extern void IFD_netList(void);
 extern void IF_netStopS(void);
 extern void IF_netDropS(void);
 extern void IF_netRusage (void);
 extern void IF_netStackList (void);
+extern void IFD_netStackList (void);
 extern void IF_netU2S (void);
 extern void IF_netS2U (void);
 extern void IF_netExec (void);

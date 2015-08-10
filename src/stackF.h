@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -65,6 +65,7 @@ typedef unsigned char Code;
 
 extern int D_Cod;
 extern void IF_show_stackF(void);
+extern void IFD_show_stackF(void);
 extern void IF_debFct(void);
 extern void IF_debFctS(void);
 extern void IF_finFct(void);

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2014  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,6 +25,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 
 #include <stdio.h>
 #include <string.h>
+#include "debug.h"
 static int DFL_did=0, DFL_sid=0, DFL_cid=0;
 
 #ifdef _WITH_COMEDILIB
@@ -153,6 +154,13 @@ char driver[24], nomdev[24];
     }
 }
 
+void IFD_listDev (void)
+{
+    _IFD_BEGIN_
+    IF_listDev();
+    _IFD_END_
+}
+
 #ifdef _WITH_COMEDILIB
 static void show_subdev(int i, int V)
 {
@@ -227,6 +235,13 @@ int i, n_subdev;
 #endif
 }
 
+void IFD_showDev (void)
+{
+    _IFD_BEGIN_
+    IF_showDev();
+    _IFD_END_
+}
+
 void IF_devShowDflt (void)
 {
 #ifdef _WITH_COMEDILIB
@@ -244,6 +259,13 @@ int n_subdev;
 #else
 	messErr(17);
 #endif
+}
+
+void IFD_devShowDflt (void)
+{
+    _IFD_BEGIN_
+    IF_devShowDflt();
+    _IFD_END_
 }
 
 static void dev_read(int did, int sid, int cid)
