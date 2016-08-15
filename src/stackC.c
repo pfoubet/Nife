@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -286,5 +286,34 @@ uint32_t n=0, i, j;
         _MODIF_i_StackC_(j);
     }
     dump_rest_pr(1,n,"character");
+}
+
+/* gestion des meta-stacks */
+
+void IF_new_stackC(void)
+{
+  if (G_i_TStackC == LSTACKS) {
+       messErr(60); return;
+  }
+  G_TiStackC[G_i_TStackC] = i_StackC;
+  G_TStackC[G_i_TStackC++] = stackC;
+  stackC = G_TStackC[G_i_TStackC];
+  i_StackC = G_TiStackC[G_i_TStackC];
+  if (stackC == (char **)0) {
+     if ((stackC = (char**)malloc(sizeof(char**)*LSTACKC)) == NULL)
+          stopErr("IF_new_stackC","malloc");
+     i_StackC=0;
+  }
+}
+
+void IF_old_stackC(void)
+{
+  if (G_i_TStackC == 0) {
+       messErr(61); return;
+  }
+  G_TiStackC[G_i_TStackC] = i_StackC;
+  G_TStackC[G_i_TStackC--] = stackC;
+  stackC = G_TStackC[G_i_TStackC];
+  i_StackC = G_TiStackC[G_i_TStackC];
 }
 

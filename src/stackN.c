@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -2079,3 +2079,30 @@ void * M;
     dump_rest_pr(1,n,"numerical");
 }
 
+/* gestion des meta-stacks */
+
+void IF_new_stackN(void)
+{
+  if (G_i_TStackN == LSTACKS) {
+       messErr(60); return;
+  }
+  G_TStackN[G_i_TStackN++] = StackN;
+  StackN = G_TStackN[G_i_TStackN];
+}
+
+void IF_old_stackN(void)
+{
+  if (G_i_TStackN == 0) {
+       messErr(61); return;
+  }
+  G_TStackN[G_i_TStackN--] = StackN;
+  StackN = G_TStackN[G_i_TStackN];
+}
+
+void IF_show_TStacks(void)
+{
+    printf("Indices of meta-stacks :\n");
+    printf("Numerical stack = %d\n",G_i_TStackN+1);
+    printf("Character stack = %d\n",G_i_TStackC+1);
+    printf("Logical stack   = %d\n",G_i_TStackL+1);
+}

@@ -79,34 +79,34 @@ How to compile and install nife
 
 Web Page
 
-        http://www.k-nife.org
+        http://www.nifesys.org
 
 
 Mailing List and Bug Reports
 
-        k-nife.org hosts all the nife-related mailing-lists.
+        nifesys.org hosts all the nife-related mailing-lists.
 
-        + nife-mailing-list AT googlegroups.com is the list used by the people
+        + nife-mailing-list@googlegroups.com is the list used by the people
           that make Nife and a general development discussion list, with
           moderate traffic.
 
         To subscribe, go directely to :
-	http://k-nife.org/mailing_list.html
+	http://nifesys.org/mailing_list.html
 
-        + nife-project AT mailman.k-nife.org is the list reserved for people
+        + nife-project@mailman.nifesys.org is the list reserved for people
 	  who want to discuss Nife in French, with also a moderate traffic.
 
         To subscribe, go directely to :
-	http://mailman.k-nife.org/mailman/listinfo/nife-project
+	http://mailman.nifesys.org/mailman/listinfo/nife-project
 
         For general bug reports, send a description of the problem to
-        nife AT seriane POINT fr or directly to the development list.
+        nife@seriane.fr or directly to the development list.
 
 
 Current Status
 
         nife is still in beta version.
 
-   Patrick Foubet (nife AT seriane POINT fr)
+   Patrick Foubet (nife@seriane.fr)
 
 

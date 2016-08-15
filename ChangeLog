@@ -1,42 +1,99 @@
 History of Nife releases :
 
+2016-08-15 - Nife 0.59 is released.
+	* Add implementation of data meta-stacks tools for context swapping :
+	  [ and ] for respectively increment and decrement the numerical stack,
+	  { and } to do theses operations with the character stack,
+	  ( and ) to do the same thing with the logical stack,
+	  and [* and ]* to operate on the three stacks.
+	* Fixed a bug causing an error with network functions netDt> and NetKey.
+	* The Nife official site is now : http://www.nifesys.org.
+
+2015-08-10 - Nife 0.55 is released.
+	* Changing the log file contents to be able to use it for debugging.
+	  The log file is in the subdirectory .nife. His name is the type
+	  .nife_PID.log, PID being its number of pid.
+	  We can display the content in real time with tail -f.
+	  The .nifeNS_pid.log and .nifeRPC_PID.log files are those of the
+	  server networks and its bodies.
+	  Log files are deleted at the end of the Nife session unless an error
+	  occured.
+	* Added "savelog function to save the logs before going out.
+	* Placing aid debugging functions. All these functions begin with the _
+ 	  character and are listed with ?libp function.
+	* Added shell script command, ex/NifeDebugTerms, to facilitate
+	  establishment and closing of the display terminals for the logs.
+	* Added the possibility, in graphic mode, to open or close
+	  terminals with keys 'home' and 'end'. These functionalities are
+	  based on performance in the window manager of the above script.
+	* Reorganization of system functions in the function stack.
+	* Improved tasks and consoles.
+	* Added the ability to execute external command interactively, with the
+	  character ! at the beginning of the line.
+
+2014-08-31 - Nife 0.51 is released.
+	* Finalising the version 1.0 of the functions dump and restore with the
+	  definition of the NBLF, Nife Binary Linkable Format.
+	* Modify some labels to clarify the perception of internal mechanisms.
+	* Some modifications to avoid unnecessary warnings at compilation.
+	* Temporary suspension of some functions related to the dynamic aspect
+	  of the language because, used improperly, it could be dangerous.
+	  These functions will be include again, but with more explanations and
+	  examples.
+
+2014-06-27 - Nife 0.49 is released.
+	* Add DEC, HEX, OCT and BIN functions to define the print mode for the
+	  integers. The default is decimal.
+	* Modify signals comportment to accept interrupt from terminal to stop
+	  execution in the main (interactive) task.
+	* Fixed an error in the case of the end: label is before the onerr: one.
+	* Fixed a bug when a signal "segmentation violation" is catched.
+	* Add some help facilities suggested by Alain Empain, until his tools
+	  are efficient in Nife.
+	* Beginning the functions dump and restore with definition of the NBLF,
+	  Nife Binary Linkable Format (just for a Request for Comments ;-).
+	* The installation has been tested by Gaetan Angely on three ARM SBCs:
+	  Raspberry Pi, Beaglebone Black, ODROID-U3 with Arch Linux ARM.
+	  All information about Arch Linux ARM at http://archlinuxarm.org/.
+	  He have compared with two Intel processors and have published a
+	  benchmak on the two mailing lists.
+
 2014-05-10 - Nife 0.47 is released.
-        * Beginning an I2C interface for Linux systems, inspired by the Linux
-          package i2c-tools.
-        * The I2C interface has been developped and tested by P. Foubet
-          with his students of ESIGETEL Villejuif, Elodie Kerfourn and Aymeric
-	  Diankouika Ntinou. They connected a Raspberry Pi with an Arduino
-	  board through the I2C bus and wrote a Nife program to highlight the
-	  data exchange between the two elements.
-	* The Nife official site is now : http://www.k-nife.org.
-        * The installation has been tested by Bernard Bonno on a Raspberry Pi
-          board Model A with Porteus ARM (based on a Slackware ARM 14.0).
+	* Beginning an I2C interface for Linux systems, inspired by the Linux
+	  package i2c-tools.
+	* The I2C interface has been developped and tested by P. Foubet
+	  with his students Elodie Kerfourn and Aymeric Diankouika. They
+	  connected a Raspberry Pi with an Arduino board through the I2C bus
+	  and wrote a Nife program to highlight the data exchange between the
+	  two elements.
+	* The installation has been tested by Bernard Bonno on a Raspberry Pi
+	  board Model A with Porteus ARM (based on a Slackware ARM 14.0).
 
 2013-09-25 - Nife 0.44 is released.
 	* Fixed a bug causing a "segmentation violation" during compilation
-          of the Nife code on some systems as Raspberry Pi A and B and others.
-          This bug was reported by Bernard Bonno during tests on a Raspberry Pi
-          Model A with 256 Mo of memory.
+	  of the Nife code on some systems as Raspberry Pi A and B and others.
+	  This bug was reported by Bernard Bonno during tests on a Raspberry Pi
+	  Model A with 256 Mo of memory.
 	* The installation has been tested by Bernard Bonno on a PC i484
-          with a Linux Porteus 2.0.
+	  with a Linux Porteus 2.0.
 	  All information about Porteus at http://www.porteus.org/.
 
 2013-09-09 - Nife 0.43 is released.
 	* Establishment of a sub-directory .nife to facilitate debugging and
-          store temporary files.
+	  store temporary files.
 	* Update some functions dependant on working directory.
 	* Fixed some bugs in the gplot tools due to new versions of gnuplot.
 	* The installation has been tested by Patrick Foubet on a Raspberry Pi
-          board Model B with standard Raspbian (Squeeze).
+	  board Model B with standard Raspbian (Squeeze).
 	  All information about the board at http://www.raspberrypi.org/faqs.
 
 2012-10-23 - Nife 0.405 is released.
-        * Fixed a bug in the data transfer protocol STSP.
-        * Adding Dt indicators in the list giving by ?n function.
-        * Fixed a bug in the netDt> function.
+	* Fixed a bug in the data transfer protocol STSP.
+	* Adding Dt indicators in the list giving by ?n function.
+	* Fixed a bug in the netDt> function.
 	* The installation has been tested by Patrick Foubet on a Beaglebone
-          board (Linux beaglebone 3.2.5+ #1 ... armv7l GNU/Linux) lended by the
-          school ESME Sudria for preparing a course on Linux drivers.
+	  board (Linux beaglebone 3.2.5+ #1 ... armv7l GNU/Linux) lended by the
+	  school ESME Sudria for preparing a course on Linux drivers.
 	  All information about the board at http://beagleboard.org/bone.
 
 2012-09-01 - Nife 0.401 is released.
@@ -77,12 +134,12 @@ History of Nife releases :
 2012-06-06 - Nife 0.320 is released.
 	* Beginning of the gplot module for use of gnuplot (www.gnuplot.info).
 	* adding theses functions :
-          - gplot and gplotM (multiple) to create gplots,
-          - gplotCmd to append text to the plot command,
-          - ?gp to list the gplots,
-          - del_gplot to delete a gplot,
-          - gplotAdd and gplotRepl (with replacement) to add values to plots,
-          - gplotClear to clear a display panel.
+	  - gplot and gplotM (multiple) to create gplots,
+	  - gplotCmd to append text to the plot command,
+	  - ?gp to list the gplots,
+	  - del_gplot to delete a gplot,
+	  - gplotAdd and gplotRepl (with replacement) to add values to plots,
+	  - gplotClear to clear a display panel.
 	* The installation has been tested by Bruno Guilbert on a Fox board G20
 	  (Debian debarm 2.6.38 with CPU Atmel AT91SAM9G20 based on ARM926EJ-S)
 	  with the students TRSE2 of Ingesup-Paris :

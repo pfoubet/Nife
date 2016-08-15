@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -17,6 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include "conf.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "nife.h"
 #include "mth.h"
@@ -206,3 +207,33 @@ uint32_t n=0;
     }
     dump_rest_pr(1,n,"logical");
 }
+
+/* gestion des meta-stacks */
+
+void IF_new_stackL(void)
+{
+  if (G_i_TStackL == LSTACKS) {
+       messErr(60); return;
+  }
+  G_TiStackL[G_i_TStackL] = i_StackL;
+  G_TStackL[G_i_TStackL++] = stackL;
+  stackL = G_TStackL[G_i_TStackL];
+  i_StackL = G_TiStackL[G_i_TStackL];
+  if (stackL == (bool *)0) {
+     if ((stackL = (bool*)malloc(sizeof(bool*)*LSTACKL)) == NULL)
+          stopErr("IF_new_stackL","malloc");
+     i_StackL=0;
+  }
+}
+
+void IF_old_stackL(void)
+{
+  if (G_i_TStackL == 0) {
+       messErr(61); return;
+  }
+  G_TiStackL[G_i_TStackL] = i_StackL;
+  G_TStackL[G_i_TStackL--] = stackL;
+  stackL = G_TStackL[G_i_TStackL];
+  i_StackL = G_TiStackL[G_i_TStackL];
+}
+

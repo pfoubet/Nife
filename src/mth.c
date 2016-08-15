@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -182,6 +182,15 @@ void TH_init(void)
 
 
 #else /* NOT _MULTI_THREADING_ */
+/* meta-stacks */
+void * G_TStackN[LSTACKS];
+char ** G_TStackC[LSTACKS];
+int  G_TiStackC[LSTACKS];
+bool * G_TStackL[LSTACKS];
+int G_TiStackL[LSTACKS];
+int G_i_TStackN=0;
+int G_i_TStackC=0;
+int G_i_TStackL=0;
 
 void * G_StackN = VIDE;
 int G_Double=0;  /* 0 si LONG, 1 si DOUBLE */
@@ -193,9 +202,11 @@ short G_VARS=1,  /* 0 VAR_OFF , 1 VAR_DOWN (default), 2 VAR_UP */
       G_FCT_TYP=0;  /* 0 None (default) , 1 Lib Fct , 2 User Fct */
 void * G_F_INS=VIDE; /* fct lib ou usr a installer */
 uint32_t G_NetKey=0;
-bool G_stackL[LSTACKL];
+bool G_stackL0[LSTACKL];
+bool * G_stackL = G_stackL0;
 int G_i_stackL=0;
-char * G_stackC[LSTACKC];
+char * G_stackC0[LSTACKC];
+char ** G_stackC = G_stackC0;;
 int G_i_stackC=0;
 char G_bufC[MAXSTRING];
 short G_Run=1;

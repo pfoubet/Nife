@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -119,10 +119,11 @@ static char *TabErr[] = {
 	"I2C read failed",
 	"binary dump error",
 	"binary restore error",
-	"-",                    /* 60 */
+	"meta-stack size limit reached",                /* 60 */
+	"no previous stack",
         "-"
 };
-#define ERR_MAX 59
+#define ERR_MAX 61
 
 void stopErr(char *M, char *F)
 {

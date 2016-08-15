@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.67])
-AC_INIT([nife], [0.51], [nife@seriane.fr])
+AC_INIT([nife], [0.59], [nife@seriane.fr])
 AM_INIT_AUTOMAKE
 
 AC_CONFIG_SRCDIR([src/tasks.c])

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,5 +40,9 @@ extern void dump_eltC(int fd, char*A);
 extern char * restore_eltC(int fd);
 extern void dump_stackC(int fd);
 extern void restore_stackC(int fd);
+
+/* meta-stacks */
+extern void IF_new_stackC(void);
+extern void IF_old_stackC(void);
 
 #endif

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -133,5 +133,11 @@ extern void NetToStack(int s, uint32_t k);
 extern int NetDepth(uint32_t k);
 extern void IF_show_netStack(uint32_t k);
 extern void IF_netDrop(uint32_t k);
+
+/* meta-stacks */
+extern void IF_new_stackN(void);
+extern void IF_old_stackN(void);
+extern void IF_show_TStacks(void);
+
 
 #endif

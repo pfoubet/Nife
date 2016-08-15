@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -274,6 +274,20 @@ void IF_show_libusr(void)
    Show_library(triList(F_USR));
 }
 
+void IF_new_stackAll(void)
+{
+    IF_new_stackN();
+    IF_new_stackC();
+    IF_new_stackL();
+}
+
+void IF_old_stackAll(void)
+{
+    IF_old_stackN();
+    IF_old_stackC();
+    IF_old_stackL();
+}
+
 void initLib(void)
 {
     addFonc(".",IF_point);
@@ -369,6 +383,15 @@ void initLib(void)
     addFonP("_?ls",IFD_show_stackL);
     addFonc("?s",IF_show_stack);
     addFonP("_?s",IFD_show_stack);
+    addFonc("?ms",IF_show_TStacks);
+    addFonc("[",IF_new_stackN);
+    addFonc("]",IF_old_stackN);
+    addFonc("{",IF_new_stackC);
+    addFonc("}",IF_old_stackC);
+    addFonc("(",IF_new_stackL);
+    addFonc(")",IF_old_stackL);
+    addFonc("[*",IF_new_stackAll);
+    addFonc("]*",IF_old_stackAll);
     /* addFonc("?libX",show_lib_addr); for internal debugging */
     addFonc("?libs",IF_show_liball);
     addFonc("?lib",IF_show_libstd);

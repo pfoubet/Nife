@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ extern void TH_init(void);
 
 #define LSTACKL 512
 #define LSTACKC 512
+#define LSTACKS 512
 #define MAXSTRING 512
 #define NBTRSUITE 10
 #define LBUF 512
@@ -110,6 +111,14 @@ extern pthread_key_t k_Base, k_StkN, k_FIns, k_NetK, k_NLig, k_NTab, k_Vars,
 #define ENV_INT (jmp_buf*)pthread_getspecific(k_EnvI)
 
 #else /* *************** NOT _MULTI_THREADING_ ******************** */
+extern void * G_TStackN[];
+extern char ** G_TStackC[];
+extern int G_TiStackC[];
+extern bool * G_TStackL[];
+extern int G_TiStackL[];
+extern int G_i_TStackN;
+extern int G_i_TStackC;
+extern int G_i_TStackL;
 
 extern void * G_StackN;
 extern int G_Double;
@@ -121,9 +130,9 @@ extern short G_VARS;
 extern short G_FCT_TYP;
 extern void * G_F_INS;
 extern uint32_t G_NetKey;
-extern bool G_stackL[];
+extern bool * G_stackL;
 extern int G_i_stackL;
-extern char * G_stackC[];
+extern char ** G_stackC;
 extern int G_i_stackC;
 extern char G_bufC[];
 extern short G_Run;

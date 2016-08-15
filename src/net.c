@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2015  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2016  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -257,12 +257,26 @@ char * b, *f;
    while (1) {
      if (read(s,(void*)b,1) <= 0) break;
      if (*b == NET_EOM) break;
+     if (b == f) break;
      b++;
-     if (b>f) { b--; break; }
    }
    if (*b != NET_EOM) return -1;
    b++;
    return(b-NET_BUF);
+}
+
+static int readMess2(int s, int n)
+{
+char * b, *f;
+   b = NET_BUF;
+   f = b + n;
+   while (1) {
+     if (read(s,(void*)b,1) <= 0) break;
+     b++;
+     if (b == f) break;
+   }
+   if (*b != NET_EOM) return -1;
+   return(n);
 }
 
 static void readAff(int s, char C)
@@ -791,7 +805,7 @@ long long v;
    if (NET) {
       if (connSock()) return;
       sendGetStd(Code);
-      if (readMess(Sock) != 2+sizeof(v)) { messErr(35); return; }
+      if (readMess2(Sock,(2+sizeof(v))) != 2+sizeof(v)) { messErr(35); return; }
       close(Sock);
       if (*NET_BUF != (Code+1))  { messErr(40); return; }
       bcopy((void*)(NET_BUF+1),(void*)&v,sizeof(v));

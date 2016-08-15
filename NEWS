@@ -1,5 +1,14 @@
 History of Nife releases :
 
+2016-08-15 - Nife 0.59 is released.
+	* Add implementation of data meta-stacks tools for context swapping :
+	  [ and ] for respectively increment and decrement the numerical stack,
+	  { and } to do theses operations with the character stack,
+	  ( and ) to do the same thing with the logical stack,
+	  and [* and ]* to operate on the three stacks.
+	* Fixed a bug causing an error with network functions netDt> and NetKey.
+	* The Nife official site is now : http://www.nifesys.org.
+
 2015-08-10 - Nife 0.55 is released.
 	* Changing the log file contents to be able to use it for debugging.
 	  The log file is in the subdirectory .nife. His name is the type
@@ -11,7 +20,7 @@ History of Nife releases :
 	  occured.
 	* Added "savelog function to save the logs before going out.
 	* Placing aid debugging functions. All these functions begin with the _
-	  character and are listed with ?libp function.
+ 	  character and are listed with ?libp function.
 	* Added shell script command, ex/NifeDebugTerms, to facilitate
 	  establishment and closing of the display terminals for the logs.
 	* Added the possibility, in graphic mode, to open or close
@@ -58,33 +67,33 @@ History of Nife releases :
 	  and wrote a Nife program to highlight the data exchange between the
 	  two elements.
 	* The installation has been tested by Bernard Bonno on a Raspberry Pi
-          board Model A with Porteus ARM (based on a Slackware ARM 14.0).
+	  board Model A with Porteus ARM (based on a Slackware ARM 14.0).
 
 2013-09-25 - Nife 0.44 is released.
 	* Fixed a bug causing a "segmentation violation" during compilation
-          of the Nife code on some systems as Raspberry Pi A and B and others.
-          This bug was reported by Bernard Bonno during tests on a Raspberry Pi
-          Model A with 256 Mo of memory.
+	  of the Nife code on some systems as Raspberry Pi A and B and others.
+	  This bug was reported by Bernard Bonno during tests on a Raspberry Pi
+	  Model A with 256 Mo of memory.
 	* The installation has been tested by Bernard Bonno on a PC i484
-          with a Linux Porteus 2.0.
+	  with a Linux Porteus 2.0.
 	  All information about Porteus at http://www.porteus.org/.
 
 2013-09-09 - Nife 0.43 is released.
 	* Establishment of a sub-directory .nife to facilitate debugging and
-          store temporary files.
+	  store temporary files.
 	* Update some functions dependant on working directory.
 	* Fixed some bugs in the gplot tools due to new versions of gnuplot.
 	* The installation has been tested by Patrick Foubet on a Raspberry Pi
-          board Model B with standard Raspbian (Squeeze).
+	  board Model B with standard Raspbian (Squeeze).
 	  All information about the board at http://www.raspberrypi.org/faqs.
 
 2012-10-23 - Nife 0.405 is released.
-        * Fixed a bug in the data transfer protocol STSP.
-        * Adding Dt indicators in the list giving by ?n function.
-        * Fixed a bug in the netDt> function.
+	* Fixed a bug in the data transfer protocol STSP.
+	* Adding Dt indicators in the list giving by ?n function.
+	* Fixed a bug in the netDt> function.
 	* The installation has been tested by Patrick Foubet on a Beaglebone
-          board (Linux beaglebone 3.2.5+ #1 ... armv7l GNU/Linux) lended by the
-          school ESME Sudria for preparing a course on Linux drivers.
+	  board (Linux beaglebone 3.2.5+ #1 ... armv7l GNU/Linux) lended by the
+	  school ESME Sudria for preparing a course on Linux drivers.
 	  All information about the board at http://beagleboard.org/bone.
 
 2012-09-01 - Nife 0.401 is released.
@@ -125,12 +134,12 @@ History of Nife releases :
 2012-06-06 - Nife 0.320 is released.
 	* Beginning of the gplot module for use of gnuplot (www.gnuplot.info).
 	* adding theses functions :
-          - gplot and gplotM (multiple) to create gplots,
-          - gplotCmd to append text to the plot command,
-          - ?gp to list the gplots,
-          - del_gplot to delete a gplot,
-          - gplotAdd and gplotRepl (with replacement) to add values to plots,
-          - gplotClear to clear a display panel.
+	  - gplot and gplotM (multiple) to create gplots,
+	  - gplotCmd to append text to the plot command,
+	  - ?gp to list the gplots,
+	  - del_gplot to delete a gplot,
+	  - gplotAdd and gplotRepl (with replacement) to add values to plots,
+	  - gplotClear to clear a display panel.
 	* The installation has been tested by Bruno Guilbert on a Fox board G20
 	  (Debian debarm 2.6.38 with CPU Atmel AT91SAM9G20 based on ARM926EJ-S)
 	  with the students TRSE2 of Ingesup-Paris :
