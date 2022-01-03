@@ -21,11 +21,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include <inttypes.h>
 #include <math.h>
 #include "stackN.h"
+#include <float.h>
 
 static double inv(double a)
 {
 double v;
-   if (a==0.0) v=HUGE;
+   if (a == 0.0) v = DBL_MAX;
    else v = (double)1.0/a;
    return v;
 }
