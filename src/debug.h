@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2019  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2022  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -14,6 +14,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>
 *******************************************************************/
 /* debug.h */
+#include <unistd.h>
 
 #ifndef __NIFE_DEBUG_H__
 #define __NIFE_DEBUG_H__

@@ -1,5 +1,14 @@
 History of Nife releases :
 
+2022-01-04 - Nife 0.61 is released.
+	* Added a definition of HUGE for compilers that no longer have it in
+	  math.h. Thanks to Jacques Godfrain Kounkou for his bug report !
+	* Added some "include" where it was missing.
+
+2019-01-27 - Nife 0.60 is released.
+	* Updated headers to show that the project is still alive !
+	* The Nife official site is now : https://www.seriane.org/nife/
+
 2016-08-15 - Nife 0.59 is released.
 	* Add implementation of data meta-stacks tools for context swapping :
 	  [ and ] for respectively increment and decrement the numerical stack,

@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2019  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2022  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -27,16 +27,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include <unistd.h>
 
 #include "nife.h"
+#include "foncs.h"
 #include "mth.h"
 #include "err.h"
 #include "lib.h"
 #include "stackC.h"
 #include "stackV.h"
+#include "stackN.h"
+#include "stackL.h"
 #include "stackF.h"
 #include "histo.h"
 #include "tasks.h"
 #include "debug.h"
 #include "help.h"
+#include "scs.h"
 #include "net.h"
 #include "gplot.h"
 

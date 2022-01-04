@@ -1,4 +1,4 @@
-/* Copyright (C) 2011-2019  Patrick H. E. Foubet - S.E.R.I.A.N.E.
+/* Copyright (C) 2011-2022  Patrick H. E. Foubet - S.E.R.I.A.N.E.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,6 +21,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>
 #include <inttypes.h>
 #include <math.h>
 #include "stackN.h"
+#ifndef HUGE
+#define HUGE       3.40282347e+38F
+#endif
 
 static double inv(double a)
 {
