@@ -82,25 +82,10 @@ Web Page
         https://www.seriane.org/nife/
 
 
-Mailing List and Bug Reports
-
-        nifesys.org hosts all the nife-related mailing-lists.
-
-        + nife-mailing-list@googlegroups.com is the list used by the people
-          that make Nife and a general development discussion list, with
-          moderate traffic.
-
-        To subscribe, go directely to :
-	http://nifesys.org/mailing_list.html
-
-        + nife-project@mailman.nifesys.org is the list reserved for people
-	  who want to discuss Nife in French, with also a moderate traffic.
-
-        To subscribe, go directely to :
-	http://mailman.nifesys.org/mailman/listinfo/nife-project
+Bug Reports
 
         For general bug reports, send a description of the problem to
-        nife@seriane.fr or directly to the development list.
+        nife@seriane.fr.
 
 
 Current Status
